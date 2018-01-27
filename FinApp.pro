@@ -25,10 +25,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        finapp.cpp
+        finapp.cpp \
+    xml_parser/csv_input.cpp \
+    xml_parser/database_manager.cpp \
+    xml_parser/parse_csv.cpp \
+    xml_parser/xml_parser_main.cpp \
+    tablemanager.cpp
 
 HEADERS += \
-        finapp.h
+        finapp.h \
+    xml_parser/csv_input.h \
+    xml_parser/database_manager.h \
+    xml_parser/parse_csv.h \
+    xml_parser/xml_parser_main.h \
+    tablemanager.h
 
 FORMS += \
         finapp.ui
+
+DISTFILES += \
+    xml_base/2017_01.csv
