@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "tablemanager.h"
+#include "graphmanager.h"
 
 namespace Ui {
 class FinApp;
@@ -23,7 +24,9 @@ private slots:
 
 private:
     Ui::FinApp *ui;
-    TableManager *TableDbManager;
+    TableManager *TableMng;
+    DatabaseManager *DbMng;
+    GraphManager *GraphMng;
 
     void dropDebugPrompt(string message);
 

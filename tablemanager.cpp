@@ -1,11 +1,17 @@
 #include "tablemanager.h"
 #include "finapp.h"
 #include "ui_finapp.h"
-
+/*
 TableManager::TableManager(string filename) {
     DbManager = new DatabaseManager(100000, filename);
     collectRecords();
     cout<<"[TableManager] : " << records[0].change << endl;
+}
+*/
+
+TableManager::TableManager(DatabaseManager *DataBaseMan) {
+    DbManager = DataBaseMan;
+    collectRecords();
 }
 
 void TableManager::collectRecords(){
@@ -25,6 +31,6 @@ QStringList TableManager::getLabels() {
 }
 
 void TableManager::getTransactionRecord(int record_id, TransactionRecord* record) {
-    cout<<"[TableManager] : " << records[record_id].change << endl;
+    //cout<<"[TableManager] : " << records[record_id].change << endl;
     *record = records[record_id];
 }

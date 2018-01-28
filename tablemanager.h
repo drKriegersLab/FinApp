@@ -47,7 +47,13 @@ public:
     /*
      * It initializates the database manager with the specified csv file and gets the records from it
      * */
-    TableManager(string filename);
+    //TableManager(string filename);
+
+    /*
+     * init function that creates a local pointer to to the main database and collect all data out of it
+     * TODO: do more flexible, dynamic the data transfers, like in the graphmanager class.
+     * */
+    TableManager(DatabaseManager* DataBaseMan);
 
     /*
      * It gets the predefined labels in specific format

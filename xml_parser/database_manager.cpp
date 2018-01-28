@@ -96,14 +96,18 @@ void DatabaseManager::printAllTransactions() {
 }
 
 void DatabaseManager::getTransaction(int record_id, TransactionRecord* record) {
-    record = new TransactionRecord();
+    TransactionRecord rec; // = new TransactionRecord();
 
-    record->currency = transactions[record_id].currency;
-    record->change = transactions[record_id].change;
-    record->balance = transactions[record_id].balance;
-    record->tr_name = transactions[record_id].tr_name;
-    record->partner_id = transactions[record_id].partner_id;
-    record->tr_type = transactions[record_id].tr_type;
+    rec.currency = transactions[record_id].currency;
+    rec.change = transactions[record_id].change;
+    rec.balance = transactions[record_id].balance;
+    rec.tr_name = transactions[record_id].tr_name;
+    rec.partner_id = transactions[record_id].partner_id;
+    rec.tr_type = transactions[record_id].tr_type;
+
+    *record = rec;
+
+    cout << "bal: " << record->balance << endl;
 
 }
 

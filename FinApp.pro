@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +30,8 @@ SOURCES += \
     xml_parser/database_manager.cpp \
     xml_parser/parse_csv.cpp \
     xml_parser/xml_parser_main.cpp \
-    tablemanager.cpp
+    tablemanager.cpp \
+    graphmanager.cpp
 
 HEADERS += \
         finapp.h \
@@ -38,7 +39,8 @@ HEADERS += \
     xml_parser/database_manager.h \
     xml_parser/parse_csv.h \
     xml_parser/xml_parser_main.h \
-    tablemanager.h
+    tablemanager.h \
+    graphmanager.h
 
 FORMS += \
         finapp.ui
