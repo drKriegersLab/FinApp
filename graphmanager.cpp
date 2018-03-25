@@ -84,7 +84,7 @@ void FinApp::showGraphAllTransactions() {
     //chartView->scene()->addWidget(popup);
 
 
-    QGridLayout *ChartLayout = new QGridLayout;
+    QGridLayout *ChartLayout = new QGridLayout(this);
     ChartLayout->addWidget(chartView, 1, 1);
 
 
