@@ -24,7 +24,10 @@ public:
     /*
      * this function gets the balances after each transaction and creates a chart from it
      * */
-    QtCharts::QChart* getGraphAllTransaction();
+    QtCharts::QChartView* getAllTransactionChartView();
+
+
+
 
 private:
     /* VARIABLE DEFINITIONS */
@@ -36,6 +39,17 @@ private:
      * function for dynamically collection of selected records from the main database
      * */
     void getBalances(int* record_ids[], float* balances[], int num_of_records);
+
+    /*
+     * get all transaction and convert them to special chart series
+     * */
+    QtCharts::QLineSeries* getAllTransactionSeries();
+
+
+    /*
+     * create the graph from the given series and set up some default parameter
+     * */
+    QtCharts::QChartView* createGraphChart(QtCharts::QLineSeries *Series,  string title);
 
 };
 

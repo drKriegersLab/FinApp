@@ -66,6 +66,8 @@ public:
      * */
     void getTransactionRecord(int record_id, TransactionRecord* record);
 
+     void initTable(QTabWidget* tableWidget);
+
 };
 
 #endif // TABLEMANAGER_H

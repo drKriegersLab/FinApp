@@ -29,6 +29,8 @@ private:
     GraphManager *GraphMng;
 
     void dropDebugPrompt(string message);
+    void showTableAllTransactions();
+    void showGraphAllTransactions();
 
 };
 
