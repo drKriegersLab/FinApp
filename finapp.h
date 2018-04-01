@@ -32,11 +32,11 @@ private slots:
 
     void on_filterSelector_currentTextChanged(const QString &current_text);
 
-    void on_filterSelector1_currentTextChanged(const QString &arg1);
-
-    void on_filterSelector2_currentTextChanged(const QString &arg1);
-
-    void on_filterSelector3_currentTextChanged(const QString &arg1);
+    /*
+     * Handler function of FilterReset button. It makes unvisible the filterSelectors, delete the vector of selected items,
+     * and set the first one's field to default.
+     * */
+    void on_buttonFilterReset_released();
 
 private:
     Ui::FinApp *ui;

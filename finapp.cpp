@@ -30,8 +30,12 @@ FinApp::FinApp(QWidget *parent) :
         ui->filterSelector2->setVisible(false);       
         ui->filterSelector3->setVisible(false);
 
-        // the content of comboboxes is defined in the first one only. Collect the list into a vector named combobox_items
+        // connect filterSelector comboboxes manually to them main event handler
+        connect(ui->filterSelector1, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
+        connect(ui->filterSelector2, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
+        connect(ui->filterSelector3, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
 
+        // the content of comboboxes is defined in the first one only. Collect the list into a vector named combobox_items
         for(int cyc_filter_items = 0; cyc_filter_items < ui->filterSelector->count(); cyc_filter_items++) {
             filter_items.push_back(ui->filterSelector->itemText(cyc_filter_items));
         }
@@ -66,6 +70,7 @@ void FinApp::dropDebugPrompt(string message) {
 void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
     bool flag_found;
 
+    filterSelComboBox->clear();
     // irerate over all pre-defined filter items
     for (int cyc_items = 0; cyc_items < filter_items.size(); cyc_items ++ ) {
         flag_found = false;
@@ -100,6 +105,11 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
 
     bool flag_found = false;
 
+    // masking out the connection --> with this way the first change will not trigger this handler function
+    ui->filterSelector1->blockSignals(true);
+    ui->filterSelector2->blockSignals(true);
+    ui->filterSelector3->blockSignals(true);
+
     // reveal the next filter selector and set its items
     qInfo() << filter_selector_counter;
     switch (filter_selector_counter) {
@@ -118,19 +128,28 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
     default:
         break;
     }
+
+    // unmask the connections
+    ui->filterSelector1->blockSignals(false);
+    ui->filterSelector2->blockSignals(false);
+    ui->filterSelector3->blockSignals(false);
 }
 
-void FinApp::on_filterSelector1_currentTextChanged(const QString &arg1)
+void FinApp::on_buttonFilterReset_released()
 {
-    connect(ui->filterSelector1, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
-}
+    // set filter selector combo boxes to unvisible
+    ui->filterSelector1->setVisible(false);
+    ui->filterSelector2->setVisible(false);
+    ui->filterSelector3->setVisible(false);
 
-void FinApp::on_filterSelector2_currentTextChanged(const QString &arg1)
-{
-    connect(ui->filterSelector2, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
-}
+    // erase selected items
+    filter_selected_items.clear();
 
-void FinApp::on_filterSelector3_currentTextChanged(const QString &arg1)
-{
-    connect(ui->filterSelector3, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
+    // reset filter selector's selector counter :-)
+    filter_selector_counter = 0;
+
+    // set the first filterSelector's field to default (masked, becasuse we don't want to trigger the handler function)
+    ui->filterSelector->blockSignals(true);
+    ui->filterSelector->setCurrentIndex(0);
+    ui->filterSelector->blockSignals(false);
 }
