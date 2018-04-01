@@ -38,7 +38,7 @@ DatabaseManager::DatabaseManager(float init_balance, string filename) {
 
     dropDebugPrompt("storing records into the database...");
     addCsvToDB(csv_content, num_of_lines);
-    printAllTransactions();
+    //printAllTransactions();
 
 
 
@@ -54,13 +54,21 @@ int DatabaseManager::addCsvToDB(CsvFields csvContent[], size_t num_of_lines) {
     TransactionRecord* tmpTransactions = new TransactionRecord[num_of_lines];
 
     for (size_t rec_id = 0; rec_id < num_of_lines; rec_id ++) {
+
         tmpTransactions[rec_id].change = (float)csvContent[rec_id].change;
+
         balance_last += csvContent[rec_id].change;
         tmpTransactions[rec_id].balance = balance_last;
         tmpTransactions[rec_id].currency = csvContent[rec_id].currency;
-        //tmpTransactions[rec_id].date = csvContent[rec_id].date_of_realization;
-        tmpTransactions[rec_id].partner_id = csvContent[rec_id].from_partner_id;
+        tmpTransactions[rec_id].date = new QDate(csvContent[rec_id].date_of_realization.yy, csvContent[rec_id].date_of_realization.mm, csvContent[rec_id].date_of_realization.dd);
+        tmpTransactions[rec_id].note = csvContent[rec_id].note;
+        //csvContent[rec_id].date_of_realization;
+        //tmpTransactions[rec_id].partner_id = csvContent[rec_id].from_partner_id;
+        /*tmpTransactions[rec_id].partner_name = csvContent[rec_id].from_partner_name;
         tmpTransactions[rec_id].tr_type = csvContent[rec_id].transaction_type;
+        tmpTransactions[rec_id].tr_note = csvContent[rec_id].transaction_note + csvContent[rec_id].transaction_note2;
+        tmpTransactions[rec_id].tr_name = csvContent[rec_id].transaction_note + csvContent[rec_id].transaction_note2;*/
+        //tmpTransactions[rec_id].tr_note << csvContent[rec_id].transaction_note2;
     }
 
     // append temporary database to the commond database
@@ -85,9 +93,9 @@ void DatabaseManager::printAllTransactions() {
         cout << "change:      " << transactions[tr_id].change << endl;
         cout << "new balance: " << transactions[tr_id].balance << endl;
         //cout << "date:        " << transactions[tr_id].date << endl;
-        cout << "name:        " << transactions[tr_id].tr_name << endl;
-        cout << "partner id:  " << transactions[tr_id].partner_id << endl;
-        cout << "trans. type: " << transactions[tr_id].tr_type << endl;
+        //cout << "name:        " << transactions[tr_id].tr_name << endl;
+        //cout << "partner id:  " << transactions[tr_id].partner_id << endl;
+        //cout << "trans. type: " << transactions[tr_id].tr_type << endl;
 
     }
 
@@ -101,13 +109,14 @@ void DatabaseManager::getTransaction(int record_id, TransactionRecord* record) {
     rec.currency = transactions[record_id].currency;
     rec.change = transactions[record_id].change;
     rec.balance = transactions[record_id].balance;
-    rec.tr_name = transactions[record_id].tr_name;
-    rec.partner_id = transactions[record_id].partner_id;
-    rec.tr_type = transactions[record_id].tr_type;
+    rec.note = transactions[record_id].note;
+    //rec.tr_name = transactions[record_id].tr_name;
+    //rec.partner_id = transactions[record_id].partner_id;
+    //rec.tr_type = transactions[record_id].tr_type;
 
     *record = rec;
 
-    cout << "bal: " << record->balance << endl;
+    //cout << "bal: " << record->balance << endl;
 
 }
 
@@ -130,7 +139,7 @@ int DatabaseManager::initDB(float init_balance) {
     transactions[0].change = init_balance;
     transactions[0].balance = init_balance;
     transactions[0].currency = "HUF";
-
+    transactions[0].note = "init balance";
     // start date
     /*
     DateStruct date_first  = new DateStruct;
@@ -139,11 +148,11 @@ int DatabaseManager::initDB(float init_balance) {
     date_first.yy = 2016;
 
     transactions[0].date = date_first;
-    */
+
     transactions[0].tr_name = "balance initialization";
     transactions[0].partner_id = "";
     transactions[0].tr_type = "init";
-
+    */
     // init num_of_records
     num_of_records = 1;
 

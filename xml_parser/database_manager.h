@@ -4,15 +4,21 @@
 #include "parse_csv.h"
 #include "csv_input.h"
 #include "parse_csv.h"
+#include "iostream"
+#include <QDate>
 
 struct TransactionRecord {
     float change;
     float balance;
     string currency;
-    DateStruct date;
-    string tr_name;
+    QDate *date;
+    string note;
+    /*string tr_name;
     string partner_id;
+    string partner_name;
     string tr_type;
+    string tr_note;
+    */
 };
 
 /*

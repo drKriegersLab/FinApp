@@ -7,13 +7,11 @@
 
 
 // default label configuration
-#define LABELS "change"<<"balance"<<"tr_name"<<"partner_id"<<"tr_type"
+#define LABELS "change"<<"balance"<<"note"
 #define NUM_OF_LABELS 5
-#define LABEL_CHANGE 0
-#define LABEL_BALANCE 1
-#define LABEL_TR_NAME 2
-#define LABEL_PARTNER_ID 3
-#define LABEL_TR_TYPE 4
+#define LABEL_ID_CHANGE 0
+#define LABEL_ID_BALANCE 1
+#define LABEL_ID_NOTE 2
 
 /*
  * This class is the responsible for all background operations/calculations of tableWidget. It collects the data from the database and in the future it will create

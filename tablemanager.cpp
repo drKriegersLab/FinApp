@@ -52,7 +52,6 @@ void FinApp::showTableAllTransactions() {
     // initialize the table
     int num_of_records = TableMng->getNumOfRecords();
 
-
     ui->tableWidget->setRowCount(num_of_records);
     ui->tableWidget->setColumnCount(NUM_OF_LABELS);
     ui->tableWidget->setHorizontalHeaderLabels(TableMng->getLabels());
@@ -70,11 +69,9 @@ void FinApp::showTableAllTransactions() {
         ui->tableWidget->setFont(Font);
         ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableWidget->setItem(cyc_record, LABEL_CHANGE, new QTableWidgetItem(QString::number(record.change)));
-        ui->tableWidget->setItem(cyc_record, LABEL_BALANCE, new QTableWidgetItem(QString::number(record.balance)));
-        ui->tableWidget->setItem(cyc_record, LABEL_TR_NAME, new QTableWidgetItem(QString::fromStdString(record.tr_name)));
-        ui->tableWidget->setItem(cyc_record, LABEL_PARTNER_ID, new QTableWidgetItem(QString::fromStdString(record.partner_id)));
-        ui->tableWidget->setItem(cyc_record, LABEL_TR_TYPE, new QTableWidgetItem(QString::fromStdString(record.tr_type)));
+        ui->tableWidget->setItem(cyc_record, LABEL_ID_CHANGE, new QTableWidgetItem(QString::number(record.change)));
+        ui->tableWidget->setItem(cyc_record, LABEL_ID_BALANCE, new QTableWidgetItem(QString::number(record.balance)));
+        ui->tableWidget->setItem(cyc_record, LABEL_ID_NOTE, new QTableWidgetItem(QString::fromStdString(record.note)));
     }
 
 }

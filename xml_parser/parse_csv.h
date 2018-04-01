@@ -17,12 +17,12 @@
 #define FIELD_DATEOFTRANSACTION 4
 #define FIELD_DATEOFREALIZATION 5
 #define FIELD_NEWBALANCE 6
-#define FIELD_FROMPARTNERID 7
-#define FIELD_FROMPARTNERNAME 8
-#define FIELD_TRANSACTIONNAME 9
-#define FIELD_TRANSACTIONNOTE 10
-#define FIELD_TRANSACTIONNOTE_2 11
-#define FIELD_TRANSACTIONTYPE 12
+#define FIELD_NOTE1 7
+#define FIELD_NOTE2 8
+#define FIELD_NOTE3 9
+#define FIELD_NOTE4 10
+#define FIELD_NOTE5 11
+#define FIELD_NOTE6 12
 
 
 struct DateStruct {
@@ -38,10 +38,8 @@ struct CsvFields {
     string currency;
     DateStruct date_of_transaction;
     DateStruct date_of_realization;
-    string transaction_name;
-    string from_partner_id;
-    string from_partner_name;
-    string transaction_type;
+    int new_balance;
+    string note;
 };
 
 

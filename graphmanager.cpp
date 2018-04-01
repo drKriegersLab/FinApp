@@ -19,7 +19,7 @@ void GraphManager::getBalances(int *record_ids[], float *balances[], int num_of_
         ids[record_id] = record_id;
         DbMng->getTransaction(record_id, &transaction);
         bals[record_id] = transaction.balance;
-        cout << "[GraphManager] : balance: " << transaction.balance << endl;
+        //cout << "[GraphManager] : balance: " << transaction.balance << endl;
     }
 
     /* return the pointer of IDs an balances of each transaction */
