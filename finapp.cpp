@@ -25,14 +25,9 @@ FinApp::FinApp(QWidget *parent) :
         //string filename = "/home/drkrieger/01_PetProjects/FinApp/xml_base/2017_01.csv";
         //TableDbManager = new TableManager(filename);
 
-        // connect manually the other comboboxes to the first one's handler function
-        connect(ui->filterSelector1, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
+        // set filter selector combo boxes to unvisible
         ui->filterSelector1->setVisible(false);
-
-        connect(ui->filterSelector2, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
-        ui->filterSelector2->setVisible(false);
-
-        connect(ui->filterSelector3, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
+        ui->filterSelector2->setVisible(false);       
         ui->filterSelector3->setVisible(false);
 
         // the content of comboboxes is defined in the first one only. Collect the list into a vector named combobox_items
@@ -71,9 +66,11 @@ void FinApp::dropDebugPrompt(string message) {
 void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
     bool flag_found;
 
+    // irerate over all pre-defined filter items
     for (int cyc_items = 0; cyc_items < filter_items.size(); cyc_items ++ ) {
         flag_found = false;
 
+        // check that the current item is in the selected ones or not. If not, store it to the output combobox's item list
         for (int cyc_selected_items = 0; cyc_selected_items < filter_selected_items.size(); cyc_selected_items++) {
             //if (QString::compare(combobox_items[cyc_items],combobox_selected_items[cyc_selected_items], Qt::CaseInsensitive)) {
             if (filter_items[cyc_items] == filter_selected_items[cyc_selected_items]) {
@@ -121,4 +118,19 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
     default:
         break;
     }
+}
+
+void FinApp::on_filterSelector1_currentTextChanged(const QString &arg1)
+{
+    connect(ui->filterSelector1, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
+}
+
+void FinApp::on_filterSelector2_currentTextChanged(const QString &arg1)
+{
+    connect(ui->filterSelector2, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
+}
+
+void FinApp::on_filterSelector3_currentTextChanged(const QString &arg1)
+{
+    connect(ui->filterSelector3, SIGNAL(currentTextChanged(QString)), this, SLOT(on_filterSelector_currentTextChanged(QString)));
 }

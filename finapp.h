@@ -32,6 +32,12 @@ private slots:
 
     void on_filterSelector_currentTextChanged(const QString &current_text);
 
+    void on_filterSelector1_currentTextChanged(const QString &arg1);
+
+    void on_filterSelector2_currentTextChanged(const QString &arg1);
+
+    void on_filterSelector3_currentTextChanged(const QString &arg1);
+
 private:
     Ui::FinApp *ui;
     TableManager *TableMng;
@@ -47,6 +53,9 @@ private:
     void showTableAllTransactions();
     void showGraphAllTransactions();
 
+    /*
+     * store to comboboxe's lists elemets from specified filter items those are not selected yet
+     * */
     void setFilterSelectorItems(QComboBox *comboBox);
 
 };
