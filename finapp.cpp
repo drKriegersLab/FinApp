@@ -51,53 +51,23 @@ void FinApp::on_actionOpen_triggered() {
     DbMng = new DatabaseManager(100000, filename.toStdString());
     TableMng = new TableManager(DbMng);
     GraphMng = new GraphManager(DbMng);
+    full_database = TableMng->getRecords();
+    filtered_database = full_database;
 
     showTableAllTransactions();
     showGraphAllTransactions();
-
-
-
-}
-
-/*
- * DEBUG PROMPTS
- * */
-void FinApp::dropDebugPrompt(string message) {
-    cout << "[FinApp] : " << message << endl;
-}
-
-
-void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
-    bool flag_found;
-
-    filterSelComboBox->clear();
-    // irerate over all pre-defined filter items
-    for (int cyc_items = 0; cyc_items < filter_items.size(); cyc_items ++ ) {
-        flag_found = false;
-
-        // check that the current item is in the selected ones or not. If not, store it to the output combobox's item list
-        for (int cyc_selected_items = 0; cyc_selected_items < filter_selected_items.size(); cyc_selected_items++) {
-            //if (QString::compare(combobox_items[cyc_items],combobox_selected_items[cyc_selected_items], Qt::CaseInsensitive)) {
-            if (filter_items[cyc_items] == filter_selected_items[cyc_selected_items]) {
-                flag_found = true;
-                break;
-            }
-        }
-
-        if (!flag_found) {
-            filterSelComboBox->addItem(filter_items[cyc_items]);
-        }
-    }
 }
 
 /*
  * Handler of text change's event for all filter selector comboboxes
  * It reveals the next filter selector and exclude the used items from the possibilities.
  * */
-
 void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
 {
     //QMessageBox::information(this, "muhaha", current_text);
+
+    filtered_database = TableMng->selectFilter(current_text, filtered_database);
+    showTableSelectedTransactions(filtered_database);
 
     // store the selected item to the list
     filter_selected_items.push_back(current_text);
@@ -129,6 +99,9 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
         break;
     }
 
+
+
+
     // unmask the connections
     ui->filterSelector1->blockSignals(false);
     ui->filterSelector2->blockSignals(false);
@@ -152,4 +125,39 @@ void FinApp::on_buttonFilterReset_released()
     ui->filterSelector->blockSignals(true);
     ui->filterSelector->setCurrentIndex(0);
     ui->filterSelector->blockSignals(false);
+
+    // reset table
+    filtered_database = full_database;
+    showTableSelectedTransactions(filtered_database);
+}
+
+void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
+    bool flag_found;
+
+    filterSelComboBox->clear();
+    // irerate over all pre-defined filter items
+    for (int cyc_items = 0; cyc_items < filter_items.size(); cyc_items ++ ) {
+        flag_found = false;
+
+        // check that the current item is in the selected ones or not. If not, store it to the output combobox's item list
+        for (int cyc_selected_items = 0; cyc_selected_items < filter_selected_items.size(); cyc_selected_items++) {
+            //if (QString::compare(combobox_items[cyc_items],combobox_selected_items[cyc_selected_items], Qt::CaseInsensitive)) {
+            if (filter_items[cyc_items] == filter_selected_items[cyc_selected_items]) {
+                flag_found = true;
+                break;
+            }
+        }
+
+        if (!flag_found) {
+            filterSelComboBox->addItem(filter_items[cyc_items]);
+        }
+    }
+}
+
+
+/*
+ * DEBUG PROMPTS
+ * */
+void FinApp::dropDebugPrompt(string message) {
+    cout << "[FinApp] : " << message << endl;
 }

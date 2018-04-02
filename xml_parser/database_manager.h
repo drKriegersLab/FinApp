@@ -31,7 +31,7 @@ private:
     /****  PRIVATE VARIABLE DEFINITIONS ****/
 
     size_t num_of_records = 0; // only the initDB appendNewRecords funtions should be used it
-    TransactionRecord *transactions = {}; // dinamically sized databse container
+    TransactionRecord *transactions = {}; // dinamically sized databse container (used this formula, because it is maybe more flexible, when I want to include more than one elements)
 
     /**** PRIVATE FUNCTION DEFINITIONS ****/
 
@@ -103,6 +103,14 @@ public:
     * print each record
     * */
     void printAllTransactions();
+
+    /*
+     * SELECT FUNCTIONS
+     * */
+    vector<TransactionRecord> selectIncomes(vector<TransactionRecord> records_input);
+    vector<TransactionRecord> selectExpenditures(vector<TransactionRecord> records_input);
+    vector<TransactionRecord> selectPpassPayments(vector<TransactionRecord> records_input);
+    vector<TransactionRecord> selectCashouts(vector<TransactionRecord> records_input);
 
 
 

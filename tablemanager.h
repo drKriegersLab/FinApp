@@ -7,11 +7,14 @@
 
 
 // default label configuration
-#define LABELS "change"<<"balance"<<"note"
-#define NUM_OF_LABELS 5
-#define LABEL_ID_CHANGE 0
-#define LABEL_ID_BALANCE 1
-#define LABEL_ID_NOTE 2
+#define LABELS "date"<<"change"<<"balance"<<"note"
+#define NUM_OF_LABELS 4
+#define LABEL_ID_DATE 0
+#define LABEL_ID_CHANGE 1
+#define LABEL_ID_BALANCE 2
+#define LABEL_ID_NOTE 3
+
+
 
 /*
  * This class is the responsible for all background operations/calculations of tableWidget. It collects the data from the database and in the future it will create
@@ -24,10 +27,11 @@ class TableManager
 
 private:
     /* VARIABLES */
-    TransactionRecord* records; // dynamically sized container of all records
+    //TransactionRecord* records; // dynamically sized container of all records
     DatabaseManager* DbManager; // object that manages all necessary database operation
     QStringList table_labels; // specific string object that contains all necessary table labels
-    int num_of_records;
+    //int num_of_records;
+    vector<TransactionRecord> records;
 
     /* FUNCTIONS */
     /*
@@ -64,7 +68,11 @@ public:
      * */
     void getTransactionRecord(int record_id, TransactionRecord* record);
 
-     void initTable(QTabWidget* tableWidget);
+    void initTable(QTabWidget* tableWidget);
+
+    vector<TransactionRecord> selectFilter(QString filter, vector<TransactionRecord> records_input);
+
+    vector<TransactionRecord> getRecords();
 
 };
 

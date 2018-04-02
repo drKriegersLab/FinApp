@@ -1,6 +1,7 @@
 #include "tablemanager.h"
 #include "finapp.h"
 #include "ui_finapp.h"
+#include "QMessageBox"
 /*
 TableManager::TableManager(string filename) {
     DbManager = new DatabaseManager(100000, filename);
@@ -11,17 +12,23 @@ TableManager::TableManager(string filename) {
 
 TableManager::TableManager(DatabaseManager *DataBaseMan) {
     DbManager = DataBaseMan;
+    //database_filters.push_back();
+
     collectRecords();
 }
 
 void TableManager::collectRecords(){
-    DbManager->getAllTransactions(&records);
-    num_of_records = DbManager->getNumOfTransactions();
+    TransactionRecord* records_array;
+    DbManager->getAllTransactions(&records_array);
+
+    for (int cyc_rec = 0; cyc_rec < DbManager->getNumOfTransactions(); cyc_rec++) {
+        records.push_back(records_array[cyc_rec]);
+    }
 
 }
 
 int TableManager::getNumOfRecords() {
-    return num_of_records;
+    return records.size();
 }
 
 
@@ -41,6 +48,36 @@ void TableManager::initTable(QTabWidget* Table) {
     Table->setColumnCount(NUM_OF_LABELS);
     Table->setHorizontalHeaderLabels(getLabels());
     */
+}
+
+vector<TransactionRecord> TableManager::selectFilter(QString filter, vector<TransactionRecord> records_input){
+    vector<TransactionRecord> records_output;
+
+    if (filter == "income") {
+        records_output = DbManager->selectIncomes(records_input);
+    }
+    else if ( filter == "expenditure" ) {
+        records_output = records_input;
+        //records_output = DbManager->selectExpenditures(records_input);
+    }
+    else if ( filter ==  "paypass" ) {
+        records_output = records_input;
+        //records_output = DbManager->selectPpassPayments(records_input);
+    }
+    else if ( filter == "chashout" ) {
+        records_output = records_input;
+        //records_output = DbManager->selectCashouts(records_input);
+    }
+    else {
+        //QMessageBox::information(, "filter not correct", "filter is not iplemented yet :-(");
+        records_output = records_input;
+    }
+
+    return records_output;
+}
+
+vector<TransactionRecord> TableManager::getRecords(){
+    return records;
 }
 
 /**
@@ -69,9 +106,34 @@ void FinApp::showTableAllTransactions() {
         ui->tableWidget->setFont(Font);
         ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        ui->tableWidget->setItem(cyc_record, LABEL_ID_DATE, new QTableWidgetItem(record.date->toString("yyyy.MM.dd")));
         ui->tableWidget->setItem(cyc_record, LABEL_ID_CHANGE, new QTableWidgetItem(QString::number(record.change)));
         ui->tableWidget->setItem(cyc_record, LABEL_ID_BALANCE, new QTableWidgetItem(QString::number(record.balance)));
         ui->tableWidget->setItem(cyc_record, LABEL_ID_NOTE, new QTableWidgetItem(QString::fromStdString(record.note)));
     }
 
 }
+
+/*
+ * Show only the selected transactions in the table.TODO: it should be the only table creator function
+ * */
+void FinApp::showTableSelectedTransactions(vector<TransactionRecord> transactions) {
+    ui->tableWidget->clear();
+    ui->tableWidget->setRowCount(transactions.size());
+    ui->tableWidget->setColumnCount(NUM_OF_LABELS);
+    ui->tableWidget->setHorizontalHeaderLabels(TableMng->getLabels());
+
+    for (int cyc_rec = 0; cyc_rec < transactions.size(); cyc_rec++) {
+        QFont Font;
+        Font.setPixelSize(11);
+        ui->tableWidget->setFont(Font);
+        ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        ui->tableWidget->setItem(cyc_rec, LABEL_ID_DATE, new QTableWidgetItem(transactions[cyc_rec].date ->toString("yyyy.MM.dd")));
+        ui->tableWidget->setItem(cyc_rec, LABEL_ID_CHANGE, new QTableWidgetItem(QString::number(transactions[cyc_rec].change)));
+        ui->tableWidget->setItem(cyc_rec, LABEL_ID_BALANCE, new QTableWidgetItem(QString::number(transactions[cyc_rec].balance)));
+        ui->tableWidget->setItem(cyc_rec, LABEL_ID_NOTE, new QTableWidgetItem(QString::fromStdString(transactions[cyc_rec].note)));
+    }
+}
+
+

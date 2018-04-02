@@ -140,6 +140,7 @@ int DatabaseManager::initDB(float init_balance) {
     transactions[0].balance = init_balance;
     transactions[0].currency = "HUF";
     transactions[0].note = "init balance";
+    transactions[0].date = new QDate(2017, 1, 1);
     // start date
     /*
     DateStruct date_first  = new DateStruct;
@@ -189,4 +190,17 @@ int DatabaseManager::appendNewRecords(TransactionRecord records[], size_t num_of
 
 void DatabaseManager::dropDebugPrompt(string prompt) {
     cout << "[DataBaseManager] : " << prompt << endl;
+}
+
+
+vector<TransactionRecord> DatabaseManager::selectIncomes(vector<TransactionRecord> records_input) {
+    vector<TransactionRecord> records_result;
+
+    for (int cyc_tr = 0; cyc_tr < records_input.size(); cyc_tr ++) {
+        if (records_input[cyc_tr].change > 0) {
+            records_result.push_back(records_input[cyc_tr]);
+        }
+    }
+
+    return records_result;
 }

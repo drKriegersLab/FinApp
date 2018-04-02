@@ -38,6 +38,7 @@ private slots:
      * */
     void on_buttonFilterReset_released();
 
+
 private:
     Ui::FinApp *ui;
     TableManager *TableMng;
@@ -49,9 +50,13 @@ private:
     vector<QString> filter_items;
     vector<QString> filter_selected_items;
 
+    vector<TransactionRecord> full_database;
+    vector<TransactionRecord> filtered_database;
+
     void dropDebugPrompt(string message);
     void showTableAllTransactions();
     void showGraphAllTransactions();
+    void showTableSelectedTransactions(vector<TransactionRecord> transactions);
 
     /*
      * store to comboboxe's lists elemets from specified filter items those are not selected yet
