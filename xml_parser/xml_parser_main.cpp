@@ -25,11 +25,11 @@ int xml_parser_main(int argc, char *argv[])
     CsvFields *csvContent;
     Parser.getCsvRecords(&csvContent);
 
-    DatabaseManager dataBase(100000);
+    //DatabaseManager dataBase(100000);
 
-    dataBase.addCsvToDB(csvContent, num_lines);
+    //dataBase.addCsvToDB(csvContent, num_lines);
 
-    dataBase.printAllTransactions();
+    //dataBase.printAllTransactions();
 
 
 

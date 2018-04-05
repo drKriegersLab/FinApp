@@ -4,7 +4,9 @@
 #include <QMainWindow>
 #include "tablemanager.h"
 #include "graphmanager.h"
+#include "xml_parser/database_manager.h"
 #include <QComboBox>
+#include "database.h"
 
 namespace Ui {
 class FinApp;
@@ -41,8 +43,9 @@ private slots:
 
 private:
     Ui::FinApp *ui;
-    TableManager *TableMng;
-    DatabaseManager *DbMng;
+    //TableManager *TableMng;
+    //DatabaseManager *DbMng;
+    DataBase *DbFull;
     GraphManager *GraphMng;
 
     int filter_selector_counter = 0;
@@ -55,7 +58,7 @@ private:
 
     void dropDebugPrompt(string message);
     void showTableAllTransactions();
-    void showGraphAllTransactions();
+    void showGraphSelectedTransactions(vector<TransactionRecord> transactions);
     void showTableSelectedTransactions(vector<TransactionRecord> transactions);
 
     /*

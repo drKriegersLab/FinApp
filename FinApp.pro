@@ -31,7 +31,8 @@ SOURCES += \
     xml_parser/parse_csv.cpp \
     xml_parser/xml_parser_main.cpp \
     tablemanager.cpp \
-    graphmanager.cpp
+    graphmanager.cpp \
+    database.cpp
 
 HEADERS += \
         finapp.h \
@@ -40,7 +41,8 @@ HEADERS += \
     xml_parser/parse_csv.h \
     xml_parser/xml_parser_main.h \
     tablemanager.h \
-    graphmanager.h
+    graphmanager.h \
+    database.h
 
 FORMS += \
         finapp.ui

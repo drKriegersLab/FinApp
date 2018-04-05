@@ -48,14 +48,17 @@ FinApp::~FinApp() {
 void FinApp::on_actionOpen_triggered() {
     QString filename = QFileDialog::getOpenFileName(this, "Open source file", "/home/drkrieger/01_PetProjects/FinApp/xml_base/", "CSV files (*.csv)");
 
-    DbMng = new DatabaseManager(100000, filename.toStdString());
-    TableMng = new TableManager(DbMng);
-    GraphMng = new GraphManager(DbMng);
-    full_database = TableMng->getRecords();
+    //DbMng = new DatabaseManager(100000, filename.toStdString());
+    DbFull = new DataBase(100000, filename.toStdString());
+    //TableMng = new TableManager(DbMng);
+    //GraphMng = new GraphManager(DbMng);
+    full_database = DbFull->getAllTransactions();
     filtered_database = full_database;
 
-    showTableAllTransactions();
-    showGraphAllTransactions();
+    showTableSelectedTransactions(filtered_database);
+    showGraphSelectedTransactions(filtered_database);
+    //showTableAllTransactions();
+    //showGraphAllTransactions();
 }
 
 /*
@@ -66,8 +69,9 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
 {
     //QMessageBox::information(this, "muhaha", current_text);
 
-    filtered_database = TableMng->selectFilter(current_text, filtered_database);
+    filtered_database = DatabaseManager::selectFilter(current_text, filtered_database);
     showTableSelectedTransactions(filtered_database);
+    showGraphSelectedTransactions(filtered_database);
 
     // store the selected item to the list
     filter_selected_items.push_back(current_text);
@@ -129,6 +133,7 @@ void FinApp::on_buttonFilterReset_released()
     // reset table
     filtered_database = full_database;
     showTableSelectedTransactions(filtered_database);
+    showGraphSelectedTransactions(filtered_database);
 }
 
 void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
