@@ -2,3 +2,5 @@
 xml_base/2017_01\.csv
 
 xml_base/\.~lock\.2017_01\.csv#
+
+*.csv

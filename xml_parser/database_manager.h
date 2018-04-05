@@ -41,8 +41,7 @@ public:
      * */
     static vector<TransactionRecord> selectIncomes(vector<TransactionRecord> records_input);
     static vector<TransactionRecord> selectExpenditures(vector<TransactionRecord> records_input);
-    static vector<TransactionRecord> selectPpassPayments(vector<TransactionRecord> records_input);
-    static vector<TransactionRecord> selectCashouts(vector<TransactionRecord> records_input);
+    static vector<TransactionRecord> selectString(vector<TransactionRecord> records_input, string searched_string);
 
 
 

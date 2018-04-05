@@ -23,6 +23,32 @@ vector<TransactionRecord> DatabaseManager::selectIncomes(vector<TransactionRecor
     return records_result;
 }
 
+vector<TransactionRecord> DatabaseManager::selectExpenditures(vector<TransactionRecord> records_input) {
+
+    vector<TransactionRecord> records_result;
+
+    for (int cyc_tr = 0; cyc_tr < records_input.size(); cyc_tr ++) {
+        if (records_input[cyc_tr].change <= 0) {
+            records_result.push_back(records_input[cyc_tr]);
+        }
+    }
+
+    return records_result;
+}
+
+vector<TransactionRecord> DatabaseManager::selectString(vector<TransactionRecord> records_input, string searched_string) {
+
+    vector<TransactionRecord> records_result;
+
+    for (int cyc_tr = 0; cyc_tr < records_input.size(); cyc_tr ++) {
+        if (records_input[cyc_tr].note.find(searched_string) != string::npos) {
+            records_result.push_back(records_input[cyc_tr]);
+        }
+    }
+
+    return records_result;
+}
+
 vector<TransactionRecord> DatabaseManager::selectFilter(QString filter, vector<TransactionRecord> records_input){
     vector<TransactionRecord> records_output;
 
@@ -30,16 +56,13 @@ vector<TransactionRecord> DatabaseManager::selectFilter(QString filter, vector<T
         records_output = DatabaseManager::selectIncomes(records_input);
     }
     else if ( filter == "expenditure" ) {
-        records_output = records_input;
-        //records_output = DbManager->selectExpenditures(records_input);
+        records_output = DatabaseManager::selectExpenditures(records_input);
     }
     else if ( filter ==  "paypass" ) {
-        records_output = records_input;
-        //records_output = DbManager->selectPpassPayments(records_input);
+        records_output = DatabaseManager::selectString(records_input, "PPASS");
     }
-    else if ( filter == "chashout" ) {
-        records_output = records_input;
-        //records_output = DbManager->selectCashouts(records_input);
+    else if ( filter == "cashout" ) {
+        records_output = DatabaseManager::selectString(records_input, "ATM");
     }
     else {
         //QMessageBox::information(, "filter not correct", "filter is not iplemented yet :-(");

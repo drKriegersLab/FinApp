@@ -30,7 +30,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab1">
        <attribute name="title">
@@ -222,12 +222,12 @@
               </item>
               <item>
                <property name="text">
-                <string>asdf</string>
+                <string>paypass</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>mehehe</string>
+                <string>cashout</string>
                </property>
               </item>
              </widget>
