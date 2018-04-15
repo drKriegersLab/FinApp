@@ -34,6 +34,7 @@ public:
      * It gives back the predefined labels in specific format
      * */
     static QStringList getLabels();
+    static int getMaxElementOfArray(int* input_array, size_t size);
 
 
 
