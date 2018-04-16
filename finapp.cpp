@@ -65,7 +65,9 @@ void FinApp::on_actionOpen_triggered() {
     filtered_database = full_database;
 
     showTableSelectedTransactions(filtered_database);
-    GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
+
+    Graph = new GraphManager(ChartLayout, filtered_database, "not title :-(");
+    //GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
     //showTableAllTransactions();
     //showGraphAllTransactions();
 }
@@ -80,7 +82,8 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
 
     filtered_database = DatabaseManager::selectFilter(current_text, filtered_database);
     showTableSelectedTransactions(filtered_database);
-    GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
+    Graph->attachNewData(filtered_database);
+    //GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
 
     // store the selected item to the list
     filter_selected_items.push_back(current_text);

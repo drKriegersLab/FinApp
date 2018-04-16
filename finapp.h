@@ -48,7 +48,7 @@ private:
     //TableManager *TableMng;
     //DatabaseManager *DbMng;
     DataBase *DbFull;
-    GraphManager *GraphMng;
+    GraphManager *Graph;
 
     QtCharts::QChartView *chartView;
     QGridLayout* ChartLayout;
