@@ -2,8 +2,9 @@
 #include "finapp.h"
 #include "ui_finapp.h"
 #include <QtCharts/QChartView>
+#include <sstream>
 
-QtCharts::QChartView* GraphManager::createcreateGraphChartView(vector<TransactionRecord> records, string title){
+void GraphManager::createGraphChartView(QGridLayout* Layout, vector<TransactionRecord> records, string title){
     // create series
     QtCharts::QLineSeries *Series = new QtCharts::QLineSeries();
     for (int rec_id = 0; rec_id < records.size(); rec_id++) {
@@ -17,30 +18,15 @@ QtCharts::QChartView* GraphManager::createcreateGraphChartView(vector<Transactio
     Chart->createDefaultAxes();
     Chart->setTitle(QString::fromStdString(title));
 
-    // creacte chart vire object
+    // creacte chart view object
     QtCharts::QChartView *ChartView = new QtCharts::QChartView(Chart);
 
+    // setup charview object and add it to the given layout
     ChartView->setRenderHint(QPainter::Antialiasing);
-
-    return ChartView;
+    Layout->addWidget(ChartView, 1, 1);
+    //return ChartView;
 }
 
-/**
- *** FUNCTION FOR FINAPP CLASS. ***
- * **/
-
-void FinApp::showGraphSelectedTransactions(vector<TransactionRecord> transactions){
-
-    // set up the view
-    QtCharts::QChartView *chartView = GraphManager::createcreateGraphChartView(transactions, "no title :-(");
-
-    // set up layout
-    QGridLayout *ChartLayout = new QGridLayout();
-    ChartLayout->addWidget(chartView, 1, 1);
-    ui->frame_graphs->setLayout(ChartLayout);
-    ui->frame_graphs->setFrameShape(QFrame::NoFrame);
-
-}
 
 
 

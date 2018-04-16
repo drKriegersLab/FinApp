@@ -7,6 +7,8 @@
 #include "xml_parser/database_manager.h"
 #include <QComboBox>
 #include "database.h"
+#include <QtCharts/QChartView>
+#include <QGridLayout>
 
 namespace Ui {
 class FinApp;
@@ -48,6 +50,9 @@ private:
     DataBase *DbFull;
     GraphManager *GraphMng;
 
+    QtCharts::QChartView *chartView;
+    QGridLayout* ChartLayout;
+
     int filter_selector_counter = 0;
     QString default_item;
     vector<QString> filter_items;
@@ -58,13 +63,15 @@ private:
 
     void dropDebugPrompt(string message);
     void showTableAllTransactions();
-    void showGraphSelectedTransactions(vector<TransactionRecord> transactions);
+
     void showTableSelectedTransactions(vector<TransactionRecord> transactions);
 
     /*
      * store to comboboxe's lists elemets from specified filter items those are not selected yet
      * */
     void setFilterSelectorItems(QComboBox *comboBox);
+
+    void initGraphView();
 
 };
 

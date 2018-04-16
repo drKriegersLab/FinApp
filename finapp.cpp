@@ -13,6 +13,7 @@
 //#include <QtCharts/QValueAxis>
 //#include <QtCharts/QLogValueAxis>
 //#include <QtWidgets/QLabel>
+#include "graphmanager.h"
 #include <QMessageBox>
 
 
@@ -39,10 +40,18 @@ FinApp::FinApp(QWidget *parent) :
         for(int cyc_filter_items = 0; cyc_filter_items < ui->filterSelector->count(); cyc_filter_items++) {
             filter_items.push_back(ui->filterSelector->itemText(cyc_filter_items));
         }
+
+        initGraphView();
     }
 
 FinApp::~FinApp() {
     delete ui;
+}
+
+void FinApp::initGraphView() {
+    ChartLayout = new QGridLayout();
+    ui->frame_graphs->setLayout(ChartLayout);
+    ui->frame_graphs->setFrameShape(QFrame::NoFrame);
 }
 
 void FinApp::on_actionOpen_triggered() {
@@ -56,7 +65,7 @@ void FinApp::on_actionOpen_triggered() {
     filtered_database = full_database;
 
     showTableSelectedTransactions(filtered_database);
-    showGraphSelectedTransactions(filtered_database);
+    GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
     //showTableAllTransactions();
     //showGraphAllTransactions();
 }
@@ -71,7 +80,7 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
 
     filtered_database = DatabaseManager::selectFilter(current_text, filtered_database);
     showTableSelectedTransactions(filtered_database);
-    showGraphSelectedTransactions(filtered_database);
+    GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
 
     // store the selected item to the list
     filter_selected_items.push_back(current_text);
@@ -133,7 +142,9 @@ void FinApp::on_buttonFilterReset_released()
     // reset table
     filtered_database = full_database;
     showTableSelectedTransactions(filtered_database);
-    showGraphSelectedTransactions(filtered_database);
+    //showGraphSelectedTransactions(filtered_database);
+    GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
+
 }
 
 void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
