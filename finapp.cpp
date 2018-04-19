@@ -15,6 +15,7 @@
 //#include <QtWidgets/QLabel>
 #include "graphmanager.h"
 #include <QMessageBox>
+#include <sstream>
 
 
 //#include "tablemanager.h"
@@ -42,6 +43,10 @@ FinApp::FinApp(QWidget *parent) :
         }
 
         initGraphView();
+        //DEBUG
+        //on_actionOpen_triggered(); // DEBUG
+        // DEBUG
+
     }
 
 FinApp::~FinApp() {
