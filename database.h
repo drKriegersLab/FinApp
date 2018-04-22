@@ -25,9 +25,17 @@ private:
     void dropDebugPrompt(string message);
     void dropDebugOK();
 
+    /* this function modify the first/init  record's date to the one which is in the first record of the csv file
+     * */
+    void setFirstRecordDate();
+
 public:
+    /// create database from csv file with an init balance
     DataBase(float init_balance, string input_filename);
+    /// create empty database
     DataBase();
+
+    DataBase(vector<TransactionRecord> transactions_input);
     //void addNewCsvContentToDataBase();
     int getNumberOfTransactions();
     TransactionRecord getTransaction(int tr_id);

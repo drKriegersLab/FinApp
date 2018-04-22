@@ -6,7 +6,7 @@ CSV_reader::CSV_reader(string filename) {
 }
 
 int CSV_reader::readFile() {
-    cout << "reading file " << fname << endl;
+    //cout << "reading file " << fname << endl;
     ifstream infile;
     string line;
     // open file and count the number of lines and after that close it. With this method, I can check the file is alid or not, and I can allocate
@@ -17,7 +17,7 @@ int CSV_reader::readFile() {
         num_of_valid_lines++;
     }
 
-    cout << "num of lines: " << num_of_valid_lines << endl;
+    //cout << "num of lines: " << num_of_valid_lines << endl;
 
     infile.close();
 

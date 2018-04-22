@@ -1,4 +1,5 @@
 #include "database.h"
+#include <sstream>
 
 DataBase::DataBase() {
     dropDebugPrompt("initialize empty database");
@@ -50,6 +51,25 @@ DataBase::DataBase(float init_balance, string input_filename)
         transactions.push_back(record_tmp);
     }
 
+    setFirstRecordDate();
+    dropDebugOK();
+}
+
+DataBase::DataBase(vector<TransactionRecord> transaction_input) {
+    flag_disp_debug_messages = true;
+
+    dropDebugPrompt("init database\n");
+    float balance = 0;
+    TransactionRecord record_temp;
+
+    for (int cyc_transaction = 0; cyc_transaction < transaction_input.size(); cyc_transaction++) {
+        record_temp = transaction_input[cyc_transaction];
+        balance += record_temp.change;
+        record_temp.balance = balance;
+        cout << "bal: " << record_temp.balance << endl;
+
+        transactions.push_back(record_temp);
+    }
     dropDebugOK();
 }
 
@@ -65,9 +85,15 @@ vector<TransactionRecord> DataBase::getAllTransactions() {
     return transactions;
 }
 
+void DataBase::setFirstRecordDate(){
+    if (transactions.size() > 1) {
+        transactions[0].date = transactions[1].date;
+    }
+}
+
 void DataBase::dropDebugPrompt(string message) {
     if (flag_disp_debug_messages) {
-        cout << "[DataBaseManager] : " << message << " ... ";
+        cout << "[DataBase] : " << message << " ... ";
     }
 }
 

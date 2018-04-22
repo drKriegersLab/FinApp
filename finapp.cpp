@@ -87,8 +87,11 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
 
     filtered_database = DatabaseManager::selectFilter(current_text, filtered_database);
     showTableSelectedTransactions(filtered_database);
-    Graph->attachNewData(filtered_database);
+    DataBase selected_database = DataBase(filtered_database);
+    Graph->addSeries(selected_database.getAllTransactions());
+    //Graph->addSeries(filtered_database);
     //GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
+
 
     // store the selected item to the list
     filter_selected_items.push_back(current_text);
@@ -151,7 +154,8 @@ void FinApp::on_buttonFilterReset_released()
     filtered_database = full_database;
     showTableSelectedTransactions(filtered_database);
     //showGraphSelectedTransactions(filtered_database);
-    GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
+    //GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
+    Graph = new GraphManager(ChartLayout, filtered_database, "not title :-(");
 
 }
 

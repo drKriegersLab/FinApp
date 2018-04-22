@@ -5,11 +5,11 @@
 //#include <string>
 
 CSV_parser::CSV_parser(string lines[], int number_of_lines) {
-    cout << "CSV parser initialization ... " << endl;
+    //cout << "CSV parser initialization ... " << endl;
     csv_lines = lines;
     num_of_records = (size_t)number_of_lines;
     csvRecords = new CsvFields[num_of_records];
-    cout << "CSV parser initialized " << endl;
+    //cout << "CSV parser initialized " << endl;
 }
 
 
