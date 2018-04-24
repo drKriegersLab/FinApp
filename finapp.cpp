@@ -83,14 +83,11 @@ void FinApp::on_actionOpen_triggered() {
  * */
 void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
 {
-    //QMessageBox::information(this, "muhaha", current_text);
 
     filtered_database = DatabaseManager::selectFilter(current_text, filtered_database);
     showTableSelectedTransactions(filtered_database);
-    DataBase selected_database = DataBase(filtered_database);
-    Graph->addSeries(selected_database.getAllTransactions());
-    //Graph->addSeries(filtered_database);
-    //GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
+    //DataBase selected_database = DataBase(filtered_database);
+    //Graph->addSeries(selected_database.getAllTransactions());
 
 
     // store the selected item to the list

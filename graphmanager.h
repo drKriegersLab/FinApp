@@ -10,6 +10,7 @@
 #include <QtWidgets/QLabel>
 #include <QGridLayout>
 #include <QDateTimeAxis>
+#include <QBarCategoryAxis>
 
 /*
  * This class responsible for all graph management and manipulation tasks
@@ -23,6 +24,7 @@ public:
     /// function for insert new data series
     void addSeries(vector<TransactionRecord> records);
 
+
     /// function for set upt the title of the figure
     void setTitle(string title);
 
@@ -33,6 +35,8 @@ public:
 private:
     QtCharts::QDateTimeAxis *axisX;
     QtCharts::QValueAxis *axisY;
+    int minval_axis_y = 0;
+    int maxval_axis_y = 0;
 
 
     QGridLayout* ParentLayout; // base layout, where we the object's class is

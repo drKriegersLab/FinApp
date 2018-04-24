@@ -5,6 +5,10 @@
 #include <sstream>
 #include <QDateTime>
 #include <QDateTimeAxis>
+#include <QBarSet>
+#include <QBarCategoryAxis>
+#include <QBarSeries>
+
 GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> records, string title) {
 
     Chart = new QtCharts::QChart();
@@ -19,7 +23,7 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
 
     // set axis Y
     axisY = new QtCharts::QValueAxis;
-    axisY->setLabelFormat("%z");
+    axisY->setLabelFormat("%i");
     axisY->setTitleText("Ft");
     Chart->addAxis(axisY, Qt::AlignLeft);
 
@@ -42,25 +46,29 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
 
 void GraphManager::addSeries(vector<TransactionRecord> records) {
     // init series
-    //QtCharts::QLineSeries*
-    QtCharts::QLineSeries* Series = new QtCharts::QLineSeries();
-    cout << "num of records: " << records.size() << endl;
+    QtCharts::QLineSeries* Series = new QtCharts::QLineSeries();    
     for (int rec_id = 0; rec_id < records.size(); rec_id++) {
-
         TransactionRecord rec = records[rec_id];
         QDateTime dateTime;
-        dateTime.setDate(QDate(rec.date->year(), rec.date->month(), rec.date->day()));
-        //dateTime.setDate(new QDate(rec.date->year(), rec.date->month(), rec.date->day()));
-        Series->append(dateTime.toMSecsSinceEpoch(), records[rec_id].balance);
-        cout<< "bal2: " << records[rec_id].balance << endl;
-    }
+        dateTime.setDate(QDate(rec.date->year(), rec.date->month(), rec.date->day()));                
+        Series->append(dateTime.toMSecsSinceEpoch(), rec.balance);
+        // set autorange
+        if ((int)rec.balance < minval_axis_y) {
+            minval_axis_y = (int)rec.balance;
+        }
+        if ((int)rec.balance > maxval_axis_y) {
+            maxval_axis_y = (int)rec.balance;
+        }
 
-    axisY->setRange(-180000,200000);
+    }
+    // set autorange
+    axisY->setRange(minval_axis_y, maxval_axis_y);
+
+    // add Series to the Chart and update axes
     Chart->addSeries(Series);
     Series->attachAxis(axisX);
     Series->attachAxis(axisY);
 }
-
 
 
 void GraphManager::addChartToLayout() {
