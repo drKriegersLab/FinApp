@@ -43,10 +43,18 @@ FinApp::FinApp(QWidget *parent) :
         }
 
         initGraphView();
-        //DEBUG
-        //on_actionOpen_triggered(); // DEBUG
-        // DEBUG
+        // set up graph view's checkboxes
+        connect(ui->checkBoxGraphSel_all, SIGNAL(stateChanged(int)), this, SLOT(checkBoxStateChanged_all(int)));
+        connect(ui->checkBoxGraphSel_income, SIGNAL(stateChanged(int)), this, SLOT(checkBoxStateChanged_income(int)));
+        connect(ui->checkBoxGraphSel_expenditure, SIGNAL(stateChanged(int)), this, SLOT(checkBoxStateChanged_expenditure(int)));
+        connect(ui->checkBoxGraphSel_exp_all, SIGNAL(stateChanged(int)), this, SLOT(checkBoxStateChanged_exp_all(int)));
+        connect(ui->checkBoxGraphSel_exp_paypass, SIGNAL(stateChanged(int)), this, SLOT(checkBoxStateChanged_exp_paypass(int)));
+        connect(ui->checkBoxGraphSel_exp_cashout, SIGNAL(stateChanged(int)), this, SLOT(checkBoxStateChanged_exp_cashout(int)));
 
+        // store main checkboxes to the main_checkboxes (managing of exclusive checked status)
+        main_checkboxes.push_back(ui->checkBoxGraphSel_all);
+        main_checkboxes.push_back(ui->checkBoxGraphSel_income);
+        main_checkboxes.push_back(ui->checkBoxGraphSel_expenditure);
     }
 
 FinApp::~FinApp() {
@@ -71,7 +79,7 @@ void FinApp::on_actionOpen_triggered() {
 
     showTableSelectedTransactions(filtered_database);
 
-    Graph = new GraphManager(ChartLayout, filtered_database, "not title :-(");
+    //Graph = new GraphManager(ChartLayout, filtered_database, "not title :-(");
     //GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
     //showTableAllTransactions();
     //showGraphAllTransactions();
@@ -131,7 +139,7 @@ void FinApp::on_filterSelector_currentTextChanged(const QString &current_text)
 
 void FinApp::on_buttonFilterReset_released()
 {
-    // set filter selector combo boxes to unvisible
+    // set filter selectocheckBoxGraphSel_onr combo boxes to unvisible
     ui->filterSelector1->setVisible(false);
     ui->filterSelector2->setVisible(false);
     ui->filterSelector3->setVisible(false);
@@ -152,7 +160,7 @@ void FinApp::on_buttonFilterReset_released()
     showTableSelectedTransactions(filtered_database);
     //showGraphSelectedTransactions(filtered_database);
     //GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
-    Graph = new GraphManager(ChartLayout, filtered_database, "not title :-(");
+    //Graph = new GraphManager(ChartLayout, filtered_database, "not title :-(");
 
 }
 
@@ -179,6 +187,79 @@ void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
     }
 }
 
+void FinApp::checkBoxStateChanged_all(int status) {
+    if (status == 2) {
+        clearGraphSelCheckBoxesExcept(ui->checkBoxGraphSel_all->text());
+
+        Graph = new GraphManager(ChartLayout, DbFull->getAllTransactions(), "all changes");
+    }
+    // TODO: empty graph
+}
+
+void FinApp::checkBoxStateChanged_income(int status){
+    if (status == 2) {
+        clearGraphSelCheckBoxesExcept(ui->checkBoxGraphSel_income->text());
+        DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_INCOME, DbFull->getAllTransactions()));
+        Graph = new GraphManager(ChartLayout, selected_database.getAllTransactions(), STRING_SELECT_FIELD_INCOME);
+
+    }
+    // TODO: empty graph
+}
+
+void FinApp::checkBoxStateChanged_expenditure(int status) {
+
+    cout << ui->checkBoxGraphSel_expenditure->text().toStdString() << endl;
+    if (status == 2) {
+        // enable sub-checkboxes
+        ui->checkBoxGraphSel_exp_all->setEnabled(true);
+        ui->checkBoxGraphSel_exp_all->setChecked(true);
+
+        ui->checkBoxGraphSel_exp_cashout->setEnabled(true);
+
+        ui->checkBoxGraphSel_exp_paypass->setEnabled(true);
+
+        clearGraphSelCheckBoxesExcept(ui->checkBoxGraphSel_expenditure->text());
+
+
+
+    }
+    else {
+        // TODO: empty graph
+        // disable and uncheck sub-checkboxes
+        ui->checkBoxGraphSel_exp_all->setEnabled(false);
+        ui->checkBoxGraphSel_exp_all->setChecked(false);
+
+        ui->checkBoxGraphSel_exp_cashout->setEnabled(false);
+        ui->checkBoxGraphSel_exp_cashout->setChecked(false);
+
+        ui->checkBoxGraphSel_exp_paypass->setEnabled(false);
+        ui->checkBoxGraphSel_exp_paypass->setChecked(false);
+    }
+}
+
+void FinApp::checkBoxStateChanged_exp_all(int status) {
+    // set graph
+    DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_EXPENDITURE, DbFull->getAllTransactions()));
+    selected_database.negateTotalDataBase();
+    Graph = new GraphManager(ChartLayout, selected_database.getAllTransactions(), STRING_SELECT_FIELD_EXPENDITURE);
+}
+
+void FinApp::checkBoxStateChanged_exp_cashout(int status) {
+
+}
+
+void FinApp::checkBoxStateChanged_exp_paypass(int status) {
+    // set graph
+}
+
+
+void FinApp::clearGraphSelCheckBoxesExcept(QString except_checkbox_name) {
+    for (int cyc_checkbox = 0; cyc_checkbox < main_checkboxes.size(); cyc_checkbox++) {
+        if (main_checkboxes[cyc_checkbox]->text() != except_checkbox_name) {
+            main_checkboxes[cyc_checkbox]->setChecked(false);
+        }
+    }
+}
 
 /*
  * DEBUG PROMPTS

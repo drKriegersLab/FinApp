@@ -73,6 +73,23 @@ DataBase::DataBase(vector<TransactionRecord> transaction_input) {
     dropDebugOK();
 }
 
+void DataBase::negateTotalDataBase() {
+    dropDebugPrompt("negate total databse .. ");
+    float balance = 0;
+    vector<TransactionRecord> transactions_temp = transactions;
+    transactions.erase(transactions.begin(), transactions.end());
+    TransactionRecord record_temp;
+
+    for (int cyc_transaction = 0; cyc_transaction < transactions_temp.size(); cyc_transaction++) {
+        record_temp = transactions_temp[cyc_transaction];
+        balance -= record_temp.change;
+        record_temp.balance = balance;
+
+        transactions.push_back(record_temp);
+    }
+    dropDebugOK();
+}
+
 int DataBase::getNumberOfTransactions() {
     return transactions.size();
 }

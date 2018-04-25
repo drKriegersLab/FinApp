@@ -14,6 +14,10 @@ struct TransactionRecord {
     string note;
 };
 */
+#define STRING_SELECT_FIELD_INCOME "income"
+#define STRING_SELECT_FIELD_EXPENDITURE "expenditure"
+#define STRING_SELECT_FIELD_PAYPASS "paypas"
+#define STRING_SELECT_FIELD_CASHOUT "cashout"
 
 class DataBase
 {
@@ -40,6 +44,8 @@ public:
     int getNumberOfTransactions();
     TransactionRecord getTransaction(int tr_id);
     vector<TransactionRecord> getAllTransactions();
+
+    void negateTotalDataBase();
 };
 
 #endif // DATABASE_H

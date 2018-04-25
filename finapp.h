@@ -9,6 +9,7 @@
 #include "database.h"
 #include <QtCharts/QChartView>
 #include <QGridLayout>
+#include <QtWidgets/QCheckBox>
 
 namespace Ui {
 class FinApp;
@@ -43,6 +44,14 @@ private slots:
     void on_buttonFilterReset_released();
 
 
+    //void on_checkBox_clicked(bool checked);
+    void checkBoxStateChanged_all(int status);
+    void checkBoxStateChanged_income(int status);
+    void checkBoxStateChanged_expenditure(int status);
+    void checkBoxStateChanged_exp_all(int status);
+    void checkBoxStateChanged_exp_paypass(int status);
+    void checkBoxStateChanged_exp_cashout(int status);
+
 private:
     Ui::FinApp *ui;
     //TableManager *TableMng;
@@ -60,6 +69,7 @@ private:
 
     vector<TransactionRecord> full_database;
     vector<TransactionRecord> filtered_database;
+    vector<QCheckBox*> main_checkboxes;
 
     void dropDebugPrompt(string message);
     void showTableAllTransactions();
@@ -72,6 +82,8 @@ private:
     void setFilterSelectorItems(QComboBox *comboBox);
 
     void initGraphView();
+
+    void clearGraphSelCheckBoxesExcept(QString except_checkbox_name);
 
 };
 
