@@ -8,7 +8,7 @@
 //#include <QtWidgets/QApplication>
 //#include <QtWidgets/QMainWindow>
 //#include <QtCharts/QChartView>
-//#include <QtCharts/QLineSeries>
+#include <QtCharts/QLineSeries>
 //#include <QtCharts/QScatterSeries>
 //#include <QtCharts/QValueAxis>
 //#include <QtCharts/QLogValueAxis>
@@ -245,11 +245,18 @@ void FinApp::checkBoxStateChanged_exp_all(int status) {
 }
 
 void FinApp::checkBoxStateChanged_exp_cashout(int status) {
-
+    // set graph
+    DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_CASHOUT, DbFull->getAllTransactions()));
+    selected_database.negateTotalDataBase();
+    Graph->addSeries(selected_database.getAllTransactions());
 }
 
 void FinApp::checkBoxStateChanged_exp_paypass(int status) {
     // set graph
+    DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_PAYPASS, DbFull->getAllTransactions()));
+    selected_database.negateTotalDataBase();
+    QtCharts::QLineSeries* paypass_series = Graph->addSeries(selected_database.getAllTransactions());
+    paypass_series->setPen(QPen(Qt::red));
 }
 
 

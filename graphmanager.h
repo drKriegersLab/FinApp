@@ -22,7 +22,7 @@ public:
     GraphManager(QGridLayout* Layout, vector<TransactionRecord> records, string title);
 
     /// function for insert new data series
-    void addSeries(vector<TransactionRecord> records);
+    QtCharts::QLineSeries* addSeries(vector<TransactionRecord> records);
 
 
     /// function for set upt the title of the figure
@@ -33,19 +33,25 @@ public:
 
 
 private:
+    /* PRIVATE VARIABLES */
     QtCharts::QDateTimeAxis *axisX;
     QtCharts::QValueAxis *axisY;
     int minval_axis_y = 0;
     int maxval_axis_y = 0;
 
+    QDateTime first_date;
+    QDateTime last_date;
 
     QGridLayout* ParentLayout; // base layout, where we the object's class is
     QtCharts::QLineSeries* Series; // data series
     QtCharts::QChart* Chart; // chart's object
     QtCharts::QChartView* ChartView; // chart's view object
 
+    /* PRIVATE FUNCTIONS */
     /// conect our precious chart to the base layout
     void addChartToLayout();
+
+    void setAbscissa();
 
 };
 

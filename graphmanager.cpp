@@ -27,6 +27,9 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
     axisY->setTitleText("Ft");
     Chart->addAxis(axisY, Qt::AlignLeft);
 
+    // set first and last date time point to determine the necessary range of X axis
+    first_date.setDate(QDate(records[0].date->year(), records[0].date->month(), records[0].date->day()));
+    last_date.setDate(QDate(records.back().date->year(), records.back().date->month(), records.back().date->day()));
     // add the first data
     addSeries(records);
 
@@ -39,20 +42,36 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
     // creacte chart view object
     ChartView = new QtCharts::QChartView(Chart);
 
+    setAbscissa();
+
     // give chart to the layout manager
     addChartToLayout();
 
 }
 
-void GraphManager::addSeries(vector<TransactionRecord> records) {
+QtCharts::QLineSeries* GraphManager::addSeries(vector<TransactionRecord> records) {
+    // get first and last date to modify the range of X axis, if the given data series has larger date range
+    QDateTime date_time;
+    date_time.setDate(QDate(records[0].date->year(), records[0].date->month(), records[0].date->day()));
+    if (date_time < first_date) {
+        first_date = date_time;
+    }
+    date_time.setDate(QDate(records[0].date->year(), records[0].date->month(), records[0].date->day()));
+    if (date_time > last_date) {
+        last_date = date_time;
+    }
+
+    last_date.setDate(QDate(records.back().date->year(), records.back().date->month(), records.back().date->day()));
+
     // init series
     QtCharts::QLineSeries* Series = new QtCharts::QLineSeries();    
     for (int rec_id = 0; rec_id < records.size(); rec_id++) {
         TransactionRecord rec = records[rec_id];
-        QDateTime dateTime;
-        dateTime.setDate(QDate(rec.date->year(), rec.date->month(), rec.date->day()));                
-        Series->append(dateTime.toMSecsSinceEpoch(), rec.balance);
-        // set autorange
+
+        date_time.setDate(QDate(rec.date->year(), rec.date->month(), rec.date->day()));
+        Series->append(date_time.toMSecsSinceEpoch(), rec.balance);
+
+        // set autorange in y axis
         if ((int)rec.balance < minval_axis_y) {
             minval_axis_y = (int)rec.balance;
         }
@@ -68,6 +87,8 @@ void GraphManager::addSeries(vector<TransactionRecord> records) {
     Chart->addSeries(Series);
     Series->attachAxis(axisX);
     Series->attachAxis(axisY);
+
+    return Series;
 }
 
 
@@ -78,9 +99,21 @@ void GraphManager::addChartToLayout() {
 }
 
 void GraphManager::setTitle(string title) {
-    Chart->setTitle(QString::fromStdString(title));
+    Chart->setTitle(QString::fromStdString(title));    
 }
 
+void GraphManager::setAbscissa() {
+    QtCharts::QLineSeries* Series = new QtCharts::QLineSeries();
+
+    Series->append(first_date.toMSecsSinceEpoch(), 0);
+    Series->append(last_date.toMSecsSinceEpoch(), 0);
+
+    Series->setPen(QPen(Qt::black));
+
+    Chart->addSeries(Series);
+    Series->attachAxis(axisX);
+    Series->attachAxis(axisY);
+}
 
 
 void GraphManager::createGraphChartView(QGridLayout* Layout, vector<TransactionRecord> records, string title){
