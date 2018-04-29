@@ -15,6 +15,7 @@
 //#include <QtWidgets/QLabel>
 #include "graphmanager.h"
 #include <QMessageBox>
+#include <QColorDialog>
 #include <sstream>
 
 
@@ -188,11 +189,19 @@ void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
 }
 
 void FinApp::checkBoxStateChanged_all(int status) {
+    // if enabled --> clear all other main checkboxes + show all transaction + set enabled the color changer button + set its color to the graph's color
     if (status == 2) {
         clearGraphSelCheckBoxesExcept(ui->checkBoxGraphSel_all->text());
-
         Graph = new GraphManager(ChartLayout, DbFull->getAllTransactions(), "all changes");
+        series_all_transactions = Graph->getFirstSeries();
+        ui->buttonColor_all->setEnabled(true);
+        setButtonColor(ui->buttonColor_all, series_all_transactions->pen().color());
+
     }
+    else {
+        ui->buttonColor_all->setEnabled(false);
+    }
+
     // TODO: empty graph
 }
 
@@ -268,9 +277,31 @@ void FinApp::clearGraphSelCheckBoxesExcept(QString except_checkbox_name) {
     }
 }
 
+void FinApp::setButtonColor(QPushButton *button, QColor color) {
+    QPalette palette = button->palette();
+    palette.setColor(QPalette::Button, color);
+    button->setAutoFillBackground(true);
+    button->setPalette(palette);
+    button->update();
+}
+
 /*
  * DEBUG PROMPTS
  * */
 void FinApp::dropDebugPrompt(string message) {
     cout << "[FinApp] : " << message << endl;
+}
+
+void FinApp::on_buttonColor_all_released()
+{
+    // show dialog and get the selected color
+    QColor selected_color = QColorDialog::getColor(Qt::green, ui->buttonColor_all);
+
+    if (selected_color.isValid()) {
+        // set button background
+        setButtonColor(ui->buttonColor_all, selected_color);
+
+        // set curve color
+        series_all_transactions->setPen(QPen(selected_color));
+    }
 }

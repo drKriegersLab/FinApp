@@ -296,7 +296,7 @@
             <widget class="QCheckBox" name="checkBoxGraphSel_all">
              <property name="geometry">
               <rect>
-               <x>40</x>
+               <x>10</x>
                <y>30</y>
                <width>131</width>
                <height>23</height>
@@ -309,7 +309,7 @@
             <widget class="QCheckBox" name="checkBoxGraphSel_income">
              <property name="geometry">
               <rect>
-               <x>40</x>
+               <x>10</x>
                <y>50</y>
                <width>131</width>
                <height>23</height>
@@ -322,7 +322,7 @@
             <widget class="QCheckBox" name="checkBoxGraphSel_expenditure">
              <property name="geometry">
               <rect>
-               <x>40</x>
+               <x>10</x>
                <y>70</y>
                <width>131</width>
                <height>23</height>
@@ -338,7 +338,7 @@
              </property>
              <property name="geometry">
               <rect>
-               <x>60</x>
+               <x>30</x>
                <y>110</y>
                <width>139</width>
                <height>23</height>
@@ -354,7 +354,7 @@
              </property>
              <property name="geometry">
               <rect>
-               <x>60</x>
+               <x>30</x>
                <y>130</y>
                <width>131</width>
                <height>23</height>
@@ -370,7 +370,7 @@
              </property>
              <property name="geometry">
               <rect>
-               <x>60</x>
+               <x>30</x>
                <y>90</y>
                <width>139</width>
                <height>23</height>
@@ -378,6 +378,25 @@
              </property>
              <property name="text">
               <string>all expenditures</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="buttonColor_all">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>30</y>
+               <width>23</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
             </widget>
            </widget>

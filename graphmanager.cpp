@@ -31,7 +31,7 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
     first_date.setDate(QDate(records[0].date->year(), records[0].date->month(), records[0].date->day()));
     last_date.setDate(QDate(records.back().date->year(), records.back().date->month(), records.back().date->day()));
     // add the first data
-    addSeries(records);
+    first_series = addSeries(records);
 
     // define the base layout
     ParentLayout = Layout;
@@ -113,6 +113,10 @@ void GraphManager::setAbscissa() {
     Chart->addSeries(Series);
     Series->attachAxis(axisX);
     Series->attachAxis(axisY);
+}
+
+QtCharts::QLineSeries* GraphManager::getFirstSeries() {
+    return first_series;
 }
 
 

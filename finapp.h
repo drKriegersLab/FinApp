@@ -10,6 +10,8 @@
 #include <QtCharts/QChartView>
 #include <QGridLayout>
 #include <QtWidgets/QCheckBox>
+#include <QColor>
+#include <QPushButton>
 
 namespace Ui {
 class FinApp;
@@ -52,7 +54,10 @@ private slots:
     void checkBoxStateChanged_exp_paypass(int status);
     void checkBoxStateChanged_exp_cashout(int status);
 
+    void on_buttonColor_all_released();
+
 private:
+    /* PRIAVTE VARIABLES */
     Ui::FinApp *ui;
     //TableManager *TableMng;
     //DatabaseManager *DbMng;
@@ -71,6 +76,11 @@ private:
     vector<TransactionRecord> filtered_database;
     vector<QCheckBox*> main_checkboxes;
 
+    //series and their colors
+    QtCharts::QLineSeries* series_all_transactions;
+
+    /* PRIVATE FUNCTIONS */
+
     void dropDebugPrompt(string message);
     void showTableAllTransactions();
 
@@ -84,6 +94,9 @@ private:
     void initGraphView();
 
     void clearGraphSelCheckBoxesExcept(QString except_checkbox_name);
+
+    /// set the bacground color of the given button to the given color
+    void setButtonColor(QPushButton* button, QColor color);
 
 };
 
