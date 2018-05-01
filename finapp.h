@@ -54,32 +54,51 @@ private slots:
     void checkBoxStateChanged_exp_paypass(int status);
     void checkBoxStateChanged_exp_cashout(int status);
 
+    /* curve color changer functions */
     void on_buttonColor_all_released();
 
+    void on_buttonColor_income_released();
+
+    void on_buttonColor_exp_all_released();
+
+    void on_buttonColor_exp_ppass_released();
+
+    void on_buttonColor_exp_cashout_released();
+
 private:
-    /* PRIAVTE VARIABLES */
+
+    /* VARIABLES */
+    // declaration of ui, main database, main graph manager objects
     Ui::FinApp *ui;
-    //TableManager *TableMng;
-    //DatabaseManager *DbMng;
     DataBase *DbFull;
     GraphManager *Graph;
 
+    // declarations regarding chart
     QtCharts::QChartView *chartView;
     QGridLayout* ChartLayout;
 
+    // table's filter selector variables
     int filter_selector_counter = 0;
     QString default_item;
     vector<QString> filter_items;
     vector<QString> filter_selected_items;
 
+    // relevant transaction lists, those should be stored
     vector<TransactionRecord> full_database;
     vector<TransactionRecord> filtered_database;
+
+    // list of main checkboxes: This vector stores all checkboxes' pointers in the graph selector
+    // of which only one can be selected at the same time
     vector<QCheckBox*> main_checkboxes;
 
-    //series and their colors
+    // relevant series
     QtCharts::QLineSeries* series_all_transactions;
+    QtCharts::QLineSeries* series_incomes;
+    QtCharts::QLineSeries* series_expenditures_all;
+    QtCharts::QLineSeries* series_expenditures_cashout;
+    QtCharts::QLineSeries* series_expenditures_ppass;
 
-    /* PRIVATE FUNCTIONS */
+    /* FUNCTIONS */
 
     void dropDebugPrompt(string message);
     void showTableAllTransactions();
@@ -91,12 +110,18 @@ private:
      * */
     void setFilterSelectorItems(QComboBox *comboBox);
 
+    /// init function for all graph-related objects
     void initGraphView();
 
-    void clearGraphSelCheckBoxesExcept(QString except_checkbox_name);
+    /// implementation of exclusive checkbox selection
+    void resetOtherMainCheckBoxes(QString except_checkbox_name);
 
     /// set the bacground color of the given button to the given color
     void setButtonColor(QPushButton* button, QColor color);
+
+    void setCurveColor(QPushButton* button, QtCharts::QLineSeries* series);
+
+
 
 };
 

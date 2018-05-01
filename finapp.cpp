@@ -190,19 +190,28 @@ void FinApp::setFilterSelectorItems(QComboBox *filterSelComboBox) {
         }
     }
 }
-
+/*
+ * HANDLER FUNCTIONS FOR GRAPH SELECTOR CHECKBOXES
+ * */
 void FinApp::checkBoxStateChanged_all(int status) {
     // if enabled --> clear all other main checkboxes + show all transaction + set enabled the color changer button + set its color to the graph's color
     if (status == 2) {
-        clearGraphSelCheckBoxesExcept(ui->checkBoxGraphSel_all->text());
+
+        resetOtherMainCheckBoxes(ui->checkBoxGraphSel_all->text());
+
+        // create graph object
         Graph = new GraphManager(ChartLayout, DbFull->getAllTransactions(), "all changes");
         series_all_transactions = Graph->getFirstSeries();
+
+        // set coloring button
         ui->buttonColor_all->setEnabled(true);
         setButtonColor(ui->buttonColor_all, series_all_transactions->pen().color());
 
     }
     else {
+        // disable coloring button
         ui->buttonColor_all->setEnabled(false);
+        setButtonColor(ui->buttonColor_all, Qt::white);
     }
 
     // TODO: empty graph
@@ -210,18 +219,36 @@ void FinApp::checkBoxStateChanged_all(int status) {
 
 void FinApp::checkBoxStateChanged_income(int status){
     if (status == 2) {
-        clearGraphSelCheckBoxesExcept(ui->checkBoxGraphSel_income->text());
+
+        resetOtherMainCheckBoxes(ui->checkBoxGraphSel_income->text());
+
+        // create new database from filtered records and a graph object out of it
         DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_INCOME, DbFull->getAllTransactions()));
         Graph = new GraphManager(ChartLayout, selected_database.getAllTransactions(), STRING_SELECT_FIELD_INCOME);
+        series_incomes = Graph->getFirstSeries();
+
+        // set coloring button
+        ui->buttonColor_income->setEnabled(true);
+        setButtonColor(ui->buttonColor_income, series_incomes->pen().color());
 
     }
-    // TODO: empty graph
+    else {
+        // TODO: empty graph
+
+        // disable coloring button
+        ui->buttonColor_income->setEnabled(false);
+        setButtonColor(ui->buttonColor_income, Qt::white);
+    }
+
 }
 
 void FinApp::checkBoxStateChanged_expenditure(int status) {
 
     cout << ui->checkBoxGraphSel_expenditure->text().toStdString() << endl;
     if (status == 2) {
+
+        resetOtherMainCheckBoxes(ui->checkBoxGraphSel_expenditure->text());
+
         // enable sub-checkboxes
         ui->checkBoxGraphSel_exp_all->setEnabled(true);
         ui->checkBoxGraphSel_exp_all->setChecked(true);
@@ -229,12 +256,8 @@ void FinApp::checkBoxStateChanged_expenditure(int status) {
         ui->checkBoxGraphSel_exp_cashout->setEnabled(true);
 
         ui->checkBoxGraphSel_exp_paypass->setEnabled(true);
-
-        clearGraphSelCheckBoxesExcept(ui->checkBoxGraphSel_expenditure->text());
-
-
-
     }
+
     else {
         // TODO: empty graph
         // disable and uncheck sub-checkboxes
@@ -250,29 +273,94 @@ void FinApp::checkBoxStateChanged_expenditure(int status) {
 }
 
 void FinApp::checkBoxStateChanged_exp_all(int status) {
-    // set graph
-    DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_EXPENDITURE, DbFull->getAllTransactions()));
-    selected_database.negateTotalDataBase();
-    Graph = new GraphManager(ChartLayout, selected_database.getAllTransactions(), STRING_SELECT_FIELD_EXPENDITURE);
+    if (status == 2) {
+        // set graph
+        DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_EXPENDITURE, DbFull->getAllTransactions()));
+        selected_database.negateTotalDataBase();
+        Graph = new GraphManager(ChartLayout, selected_database.getAllTransactions(), STRING_SELECT_FIELD_EXPENDITURE);
+        series_expenditures_all = Graph->getFirstSeries();
+
+        // set coloring button
+        ui->buttonColor_exp_all->setEnabled(true);
+        setButtonColor(ui->buttonColor_exp_all, series_expenditures_all->pen().color());
+    }
+
+    else {
+        // TODO: empty graph
+        ui->buttonColor_exp_all->setEnabled(false);
+        setButtonColor(ui->buttonColor_exp_all, Qt::white);
+    }
 }
 
 void FinApp::checkBoxStateChanged_exp_cashout(int status) {
-    // set graph
-    DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_CASHOUT, DbFull->getAllTransactions()));
-    selected_database.negateTotalDataBase();
-    Graph->addSeries(selected_database.getAllTransactions());
+    if (status == 2) {
+        // set graph
+        DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_CASHOUT, DbFull->getAllTransactions()));
+        selected_database.negateTotalDataBase();
+        series_expenditures_cashout = Graph->addSeries(selected_database.getAllTransactions());
+
+        // set coloring button
+        ui->buttonColor_exp_cashout->setEnabled(true);
+        setButtonColor(ui->buttonColor_exp_cashout, series_expenditures_cashout->pen().color());
+    }
+    else {
+        // disable coloring button
+        ui->buttonColor_exp_cashout->setEnabled(false);
+        setButtonColor(ui->buttonColor_exp_cashout, Qt::white);
+    }
+
 }
 
 void FinApp::checkBoxStateChanged_exp_paypass(int status) {
-    // set graph
-    DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_PAYPASS, DbFull->getAllTransactions()));
-    selected_database.negateTotalDataBase();
-    QtCharts::QLineSeries* paypass_series = Graph->addSeries(selected_database.getAllTransactions());
-    paypass_series->setPen(QPen(Qt::red));
+
+    if (status == 2) {
+        // set graph
+        DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_PAYPASS, DbFull->getAllTransactions()));
+        selected_database.negateTotalDataBase();
+        series_expenditures_ppass = Graph->addSeries(selected_database.getAllTransactions());
+
+        // set coloring button
+        ui->buttonColor_exp_ppass->setEnabled(true);
+        setButtonColor(ui->buttonColor_exp_ppass, series_expenditures_ppass->pen().color());
+    }
+
+    else {
+        // reset coloring button
+        ui->buttonColor_exp_ppass->setEnabled(false);
+        setButtonColor(ui->buttonColor_exp_ppass, Qt::white);
+    }
+}
+
+/*
+ * HANDLER FUNCTIONS FOR COLOR CHANGER BUTTONS
+ * */
+void FinApp::on_buttonColor_all_released()
+{
+    setCurveColor(ui->buttonColor_all, series_all_transactions);
+}
+
+void FinApp::on_buttonColor_income_released()
+{
+    setCurveColor(ui->buttonColor_income, series_incomes);
+}
+
+void FinApp::on_buttonColor_exp_all_released()
+{
+    setCurveColor(ui->buttonColor_exp_all, series_expenditures_all);
+}
+
+void FinApp::on_buttonColor_exp_ppass_released()
+{
+    setCurveColor(ui->buttonColor_exp_ppass, series_expenditures_ppass);
+}
+
+void FinApp::on_buttonColor_exp_cashout_released()
+{
+    setCurveColor(ui->buttonColor_exp_cashout, series_expenditures_cashout);
 }
 
 
-void FinApp::clearGraphSelCheckBoxesExcept(QString except_checkbox_name) {
+void FinApp::resetOtherMainCheckBoxes(QString except_checkbox_name) {
     for (int cyc_checkbox = 0; cyc_checkbox < main_checkboxes.size(); cyc_checkbox++) {
         if (main_checkboxes[cyc_checkbox]->text() != except_checkbox_name) {
             main_checkboxes[cyc_checkbox]->setChecked(false);
@@ -280,13 +368,27 @@ void FinApp::clearGraphSelCheckBoxesExcept(QString except_checkbox_name) {
     }
 }
 
-void FinApp::setButtonColor(QPushButton *button, QColor color) {
+void FinApp::setCurveColor(QPushButton *button, QtCharts::QLineSeries *series) {
+
+    QColor selected_color = QColorDialog::getColor(Qt::green, button);
+
+    if (selected_color.isValid()) {
+
+        setButtonColor(button, selected_color);
+
+        series->setPen(QPen(selected_color));
+    }
+}
+
+void FinApp::setButtonColor(QPushButton* button, QColor color) {
+
     QPalette palette = button->palette();
     palette.setColor(QPalette::Button, color);
     button->setAutoFillBackground(true);
     button->setPalette(palette);
     button->update();
 }
+
 
 /*
  * DEBUG PROMPTS
@@ -295,16 +397,6 @@ void FinApp::dropDebugPrompt(string message) {
     cout << "[FinApp] : " << message << endl;
 }
 
-void FinApp::on_buttonColor_all_released()
-{
-    // show dialog and get the selected color
-    QColor selected_color = QColorDialog::getColor(Qt::green, ui->buttonColor_all);
 
-    if (selected_color.isValid()) {
-        // set button background
-        setButtonColor(ui->buttonColor_all, selected_color);
 
-        // set curve color
-        series_all_transactions->setPen(QPen(selected_color));
-    }
-}
+
