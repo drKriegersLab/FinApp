@@ -294,6 +294,9 @@
              <enum>QFrame::Raised</enum>
             </property>
             <widget class="QCheckBox" name="checkBoxGraphSel_all">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
                <x>10</x>
@@ -307,6 +310,9 @@
              </property>
             </widget>
             <widget class="QCheckBox" name="checkBoxGraphSel_income">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
                <x>10</x>
@@ -320,6 +326,9 @@
              </property>
             </widget>
             <widget class="QCheckBox" name="checkBoxGraphSel_expenditure">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
                <x>10</x>

@@ -69,21 +69,24 @@ void FinApp::initGraphView() {
 }
 
 void FinApp::on_actionOpen_triggered() {
+    // open file
     QString filename = QFileDialog::getOpenFileName(this, "Open source file", "/home/drkrieger/01_PetProjects/FinApp/xml_base/", "CSV files (*.csv)");
 
-    //DbMng = new DatabaseManager(100000, filename.toStdString());
+    // create dataase out of the file
     DbFull = new DataBase(100000, filename.toStdString());
-    //TableMng = new TableManager(DbMng);
-    //GraphMng = new GraphManager(DbMng);
+
+    // get all transactions
     full_database = DbFull->getAllTransactions();
     filtered_database = full_database;
 
+    // show init table (of all transactions)
     showTableSelectedTransactions(filtered_database);
 
-    //Graph = new GraphManager(ChartLayout, filtered_database, "not title :-(");
-    //GraphManager::createGraphChartView(ChartLayout, filtered_database, "no title :-)");
-    //showTableAllTransactions();
-    //showGraphAllTransactions();
+    // enable graph selectors
+    ui->checkBoxGraphSel_all->setEnabled(true);
+    ui->checkBoxGraphSel_expenditure->setEnabled(true);
+    ui->checkBoxGraphSel_income->setEnabled(true);
+
 }
 
 /*
