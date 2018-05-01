@@ -13,6 +13,7 @@
 #include <QColor>
 #include <QPushButton>
 
+
 namespace Ui {
 class FinApp;
 }

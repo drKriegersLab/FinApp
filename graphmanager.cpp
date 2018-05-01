@@ -9,6 +9,7 @@
 #include <QBarCategoryAxis>
 #include <QBarSeries>
 
+
 GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> records, string title) {
 
     Chart = new QtCharts::QChart();
@@ -49,6 +50,7 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
 
 }
 
+
 QtCharts::QLineSeries* GraphManager::addSeries(vector<TransactionRecord> records) {
     // get first and last date to modify the range of X axis, if the given data series has larger date range
     QDateTime date_time;
@@ -83,25 +85,41 @@ QtCharts::QLineSeries* GraphManager::addSeries(vector<TransactionRecord> records
     // set autorange
     axisY->setRange(minval_axis_y, maxval_axis_y);
 
-    // add Series to the Chart and update axes
+    // add Series to the Chart and update axes    
     Chart->addSeries(Series);
     Series->attachAxis(axisX);
     Series->attachAxis(axisY);
+
 
     return Series;
 }
 
 
-void GraphManager::addChartToLayout() {
-    // setup charview object and add it to the given layout
-    ChartView->setRenderHint(QPainter::Antialiasing);
-    ParentLayout->addWidget(ChartView, 1, 1);
-}
-
 void GraphManager::setTitle(string title) {
     Chart->setTitle(QString::fromStdString(title));    
 }
 
+
+QtCharts::QLineSeries* GraphManager::getFirstSeries() {
+    return first_series;
+}
+
+void GraphManager::deleteFirstSeries() {
+    Chart->removeSeries(first_series);
+}
+
+
+void GraphManager::deleteAllSeries() {
+    Chart->removeAllSeries();
+
+}
+
+void GraphManager::deleteSeries(QtCharts::QLineSeries *series) {
+    Chart->removeSeries(series);
+}
+
+
+/* PRIVATE FUNCTIONS */
 void GraphManager::setAbscissa() {
     QtCharts::QLineSeries* Series = new QtCharts::QLineSeries();
 
@@ -115,11 +133,15 @@ void GraphManager::setAbscissa() {
     Series->attachAxis(axisY);
 }
 
-QtCharts::QLineSeries* GraphManager::getFirstSeries() {
-    return first_series;
+
+void GraphManager::addChartToLayout() {
+    // setup charview object and add it to the given layout
+    ChartView->setRenderHint(QPainter::Antialiasing);
+    ParentLayout->addWidget(ChartView, 1, 1);
 }
 
 
+/* PUBLIC STATIC FUNCTION */
 void GraphManager::createGraphChartView(QGridLayout* Layout, vector<TransactionRecord> records, string title){
     // create series
     QtCharts::QLineSeries *Series = new QtCharts::QLineSeries();

@@ -19,6 +19,7 @@
 #include <sstream>
 
 
+
 //#include "tablemanager.h"
 
 FinApp::FinApp(QWidget *parent) :
@@ -207,14 +208,16 @@ void FinApp::checkBoxStateChanged_all(int status) {
         ui->buttonColor_all->setEnabled(true);
         setButtonColor(ui->buttonColor_all, series_all_transactions->pen().color());
 
+
     }
     else {
         // disable coloring button
         ui->buttonColor_all->setEnabled(false);
         setButtonColor(ui->buttonColor_all, Qt::white);
+
+        Graph->deleteAllSeries();
     }
 
-    // TODO: empty graph
 }
 
 void FinApp::checkBoxStateChanged_income(int status){
@@ -307,6 +310,9 @@ void FinApp::checkBoxStateChanged_exp_cashout(int status) {
         // disable coloring button
         ui->buttonColor_exp_cashout->setEnabled(false);
         setButtonColor(ui->buttonColor_exp_cashout, Qt::white);
+
+        // remove series
+        Graph->deleteSeries(series_expenditures_cashout);
     }
 
 }
@@ -321,13 +327,16 @@ void FinApp::checkBoxStateChanged_exp_paypass(int status) {
 
         // set coloring button
         ui->buttonColor_exp_ppass->setEnabled(true);
-        setButtonColor(ui->buttonColor_exp_ppass, series_expenditures_ppass->pen().color());
+        setButtonColor(ui->buttonColor_exp_ppass, series_expenditures_ppass->pen().color());                
     }
 
     else {
         // reset coloring button
         ui->buttonColor_exp_ppass->setEnabled(false);
         setButtonColor(ui->buttonColor_exp_ppass, Qt::white);
+
+        // remove series
+        Graph->deleteSeries(series_expenditures_ppass);
     }
 }
 
