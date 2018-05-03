@@ -8,6 +8,7 @@
 #include <QBarSet>
 #include <QBarCategoryAxis>
 #include <QBarSeries>
+#include <iostream>
 
 
 GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> records, string title) {
@@ -91,11 +92,19 @@ QtCharts::QLineSeries* GraphManager::addSeries(vector<TransactionRecord> records
     Series->attachAxis(axisX);
     Series->attachAxis(axisY);
 
+    // add a name to the series. This name will contain a 5 digits random number and a serial number
     num_of_series++;
     QString series_name = QString::number(tools::generateTimeDependentRandomUInt());
     series_name.append("_");
     series_name.append(QString::number(num_of_series));
-    cout << series_name.toStdString() << endl;
+    Series->setName(series_name);
+    // send a message about the new series
+    string message = "added series. Name: ";
+    message.append(series_name.toStdString());
+    dropDebugPrompt(message );
+
+    //put the series into the container
+    series_container.push_back(Series);
 
     return Series;
 }
@@ -110,18 +119,51 @@ QtCharts::QLineSeries* GraphManager::getFirstSeries() {
     return first_series;
 }
 
-void GraphManager::deleteFirstSeries() {
+void GraphManager::deleteFirstSeries() {    
+
+    // remove first/base series from chart
     Chart->removeSeries(first_series);
+
+    // remove the first element from collection
+    series_container.erase(series_container.begin());
+
+    // update y axis
+    updateOrdinateRange();
 }
 
 
-void GraphManager::deleteAllSeries() {
+void GraphManager::deleteAllSeries() {    
     Chart->removeAllSeries();
+    series_container.clear();
 
 }
 
 void GraphManager::deleteSeries(QtCharts::QLineSeries *series) {
+
+    // remove series from the chart
     Chart->removeSeries(series);
+
+    // remove series from the collection
+    dropDebugPrompt("deleteSeries with given pointer");
+    bool flag_found = false;
+    for (uint cyc_series = 0; cyc_series < series_container.size(); cyc_series++) {
+
+        if (series_container[cyc_series]->name() == series->name()) {
+
+            eries_container.erase(series_container.begin() + cyc_series);
+            cout << "\tdeleted" << endl;
+            flag_found = true;
+
+            break;
+        }
+    }
+
+    if (!flag_found) {
+        dropDebugPrompt("[ERR] series not found between the associated series");
+    }
+
+    // update y Axis
+    updateOrdinateRange();
 }
 
 
@@ -146,6 +188,61 @@ void GraphManager::addChartToLayout() {
     ParentLayout->addWidget(ChartView, 1, 1);
 }
 
+void GraphManager::updateOrdinateRange() {
+    QtCharts::QLineSeries* series = series_container[0];
+    QPointF point = series->at(0);
+
+    minval_axis_y = (int)point.y();
+    maxval_axis_y = minval_axis_y;
+
+    for (uint cyc_series = 0; cyc_series < series_container.size(); cyc_series ++) {
+        series = series_container[cyc_series];
+        cout << "found names: " << series->name().toStdString() << endl;
+
+        for (uint cyc_series_point = 0; cyc_series_point < series->count(); cyc_series_point++) {
+            point = series->at(cyc_series_point);
+
+            if ((int)point.y() < minval_axis_y) {
+                minval_axis_y = (int)point.y();
+            }
+            else if ((int)point.y() > maxval_axis_y) {
+                maxval_axis_y = (int)point.y();
+            }
+        }
+    }
+
+    axisY->setRange(minval_axis_y, maxval_axis_y);
+    //series->attachAxis(axisY);
+
+
+    /*
+    // set autorange in y axis
+    if ((int)rec.balance < minval_axis_y) {
+        minval_axis_y = (int)rec.balance;
+    }
+    if ((int)rec.balance // set autorange in y axis
+        if ((int)rec.balance < minval_axis_y) {
+            minval_axis_y = (int)rec.balance;
+        }
+        if ((int)rec.balance > maxval_axis_y) {
+            maxval_axis_y = (int)rec.balance;
+        }
+
+    }
+    // set autorange
+    axisY->setRange(minval_axis_y, maxval_axis_y);> maxval_axis_y) {
+        maxval_axis_y = (int)rec.balance;
+    }
+
+}
+// set autorange
+axisY->setRange(minval_axis_y, maxval_axis_y);
+*/
+}
+
+void GraphManager::dropDebugPrompt(string message) {
+    cout << "[GraphManager] : " << message << endl;
+}
 
 /* PUBLIC STATIC FUNCTION */
 void GraphManager::createGraphChartView(QGridLayout* Layout, vector<TransactionRecord> records, string title){

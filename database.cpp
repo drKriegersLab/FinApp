@@ -66,7 +66,7 @@ DataBase::DataBase(vector<TransactionRecord> transaction_input) {
         record_temp = transaction_input[cyc_transaction];
         balance += record_temp.change;
         record_temp.balance = balance;
-        cout << "bal: " << record_temp.balance << endl;
+        //cout << "bal: " << record_temp.balance << endl;
 
         transactions.push_back(record_temp);
     }

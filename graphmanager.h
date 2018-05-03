@@ -80,6 +80,10 @@ private:
     /// and the y values are zeros
     void setAbscissa();
 
+    void updateOrdinateRange();
+
+    void dropDebugPrompt(string message);
+
 };
 
 #endif // GRAPHMANAGER_H

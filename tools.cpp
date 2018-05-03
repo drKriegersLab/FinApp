@@ -28,7 +28,6 @@ uint tools::generateTimeDependentRandomUInt() {
         cyc ++;
     } while((cyc < 500) || ((rand2 > 100000) && (rand2 < 500000)));
 
-    std::cout << rand1 << " + " << rand2 << " = " << (uint)rand1 + (uint)rand2 << std::endl;
     return (uint)rand1 + (uint)rand2;
     // note: this solution is more randomly than the usually used rand()%range + swipe, because the probability of linear deviation of the numbers
     // are higher than if you just get the modulo of a number value
