@@ -3,7 +3,7 @@
 #include "ui_finapp.h"
 #include "QMessageBox"
 #include <sstream>
-
+#include <iostream>
 #include <array>
 
 QStringList TableManager::getLabels() {

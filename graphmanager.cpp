@@ -32,6 +32,7 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
     first_date.setDate(QDate(records[0].date->year(), records[0].date->month(), records[0].date->day()));
     last_date.setDate(QDate(records.back().date->year(), records.back().date->month(), records.back().date->day()));
     // add the first data
+    num_of_series = 0;
     first_series = addSeries(records);
 
     // define the base layout
@@ -90,6 +91,11 @@ QtCharts::QLineSeries* GraphManager::addSeries(vector<TransactionRecord> records
     Series->attachAxis(axisX);
     Series->attachAxis(axisY);
 
+    num_of_series++;
+    QString series_name = QString::number(tools::generateTimeDependentRandomUInt());
+    series_name.append("_");
+    series_name.append(QString::number(num_of_series));
+    cout << series_name.toStdString() << endl;
 
     return Series;
 }

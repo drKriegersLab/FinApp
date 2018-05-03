@@ -32,7 +32,8 @@ SOURCES += \
     xml_parser/xml_parser_main.cpp \
     tablemanager.cpp \
     graphmanager.cpp \
-    database.cpp
+    database.cpp \
+    tools.cpp
 
 HEADERS += \
         finapp.h \
@@ -42,7 +43,8 @@ HEADERS += \
     xml_parser/xml_parser_main.h \
     tablemanager.h \
     graphmanager.h \
-    database.h
+    database.h \
+    tools.h
 
 FORMS += \
         finapp.ui

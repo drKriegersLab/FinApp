@@ -11,6 +11,7 @@
 #include <QGridLayout>
 #include <QDateTimeAxis>
 #include <QBarCategoryAxis>
+#include "tools.h"
 
 /*
  * This class responsible for all graph management and manipulation tasks
@@ -65,6 +66,8 @@ private:
     QDateTime last_date;
 
     QtCharts::QLineSeries* first_series;
+
+    int num_of_series;
     vector<QtCharts::QLineSeries*> series_container; // series in the graph manager
 
     /* PRIVATE FUNCTIONS */
