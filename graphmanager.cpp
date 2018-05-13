@@ -121,7 +121,7 @@ QtCharts::QLineSeries* GraphManager::getFirstSeries() {
 
 void GraphManager::deleteFirstSeries() {    
 
-    // remove first/base series from chart
+    // remove first(base) series from chart
     Chart->removeSeries(first_series);
 
     // remove the first element from collection
@@ -150,7 +150,7 @@ void GraphManager::deleteSeries(QtCharts::QLineSeries *series) {
 
         if (series_container[cyc_series]->name() == series->name()) {
 
-            eries_container.erase(series_container.begin() + cyc_series);
+            series_container.erase(series_container.begin() + cyc_series);
             cout << "\tdeleted" << endl;
             flag_found = true;
 
@@ -213,31 +213,6 @@ void GraphManager::updateOrdinateRange() {
 
     axisY->setRange(minval_axis_y, maxval_axis_y);
     //series->attachAxis(axisY);
-
-
-    /*
-    // set autorange in y axis
-    if ((int)rec.balance < minval_axis_y) {
-        minval_axis_y = (int)rec.balance;
-    }
-    if ((int)rec.balance // set autorange in y axis
-        if ((int)rec.balance < minval_axis_y) {
-            minval_axis_y = (int)rec.balance;
-        }
-        if ((int)rec.balance > maxval_axis_y) {
-            maxval_axis_y = (int)rec.balance;
-        }
-
-    }
-    // set autorange
-    axisY->setRange(minval_axis_y, maxval_axis_y);> maxval_axis_y) {
-        maxval_axis_y = (int)rec.balance;
-    }
-
-}
-// set autorange
-axisY->setRange(minval_axis_y, maxval_axis_y);
-*/
 }
 
 void GraphManager::dropDebugPrompt(string message) {

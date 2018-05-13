@@ -80,8 +80,11 @@ private:
     /// and the y values are zeros
     void setAbscissa();
 
+    /// implementation of autorange. Each time, when you call this function, it checks all stored Series
+    /// in the collection, and determines the necessary maximum and minimum of the Y axis.
     void updateOrdinateRange();
 
+    /// Drop class specific debug message to the Console.
     void dropDebugPrompt(string message);
 
 };
