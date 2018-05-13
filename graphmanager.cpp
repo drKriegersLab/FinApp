@@ -27,6 +27,7 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
     axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTitleText("Ft");
+
     Chart->addAxis(axisY, Qt::AlignLeft);
 
     // set first and last date time point to determine the necessary range of X axis
@@ -91,6 +92,7 @@ QtCharts::QLineSeries* GraphManager::addSeries(vector<TransactionRecord> records
     Chart->addSeries(Series);
     Series->attachAxis(axisX);
     Series->attachAxis(axisY);
+    axisY->applyNiceNumbers();
 
     // add a name to the series. This name will contain a 5 digits random number and a serial number
     num_of_series++;
@@ -210,8 +212,11 @@ void GraphManager::updateOrdinateRange() {
             }
         }
     }
+    minval_axis_y = -100000;
+    maxval_axis_y = 100000;
 
     axisY->setRange(minval_axis_y, maxval_axis_y);
+//    axisY->applyNiceNumbers();
     //series->attachAxis(axisY);
 }
 
