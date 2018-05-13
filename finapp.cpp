@@ -236,7 +236,8 @@ void FinApp::checkBoxStateChanged_income(int status){
 
     }
     else {
-        // TODO: empty graph
+        // empty graph
+        Graph->deleteAllSeries();
 
         // disable coloring button
         ui->buttonColor_income->setEnabled(false);
@@ -262,7 +263,7 @@ void FinApp::checkBoxStateChanged_expenditure(int status) {
     }
 
     else {
-        // TODO: empty graph
+
         // disable and uncheck sub-checkboxes
         ui->checkBoxGraphSel_exp_all->setEnabled(false);
         ui->checkBoxGraphSel_exp_all->setChecked(false);
@@ -289,7 +290,10 @@ void FinApp::checkBoxStateChanged_exp_all(int status) {
     }
 
     else {
-        // TODO: empty graph
+        // empty graph
+        Graph->deleteSeries(series_expenditures_all);
+
+        // disable coloring button
         ui->buttonColor_exp_all->setEnabled(false);
         setButtonColor(ui->buttonColor_exp_all, Qt::white);
     }
