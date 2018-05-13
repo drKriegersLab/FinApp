@@ -253,6 +253,8 @@ void FinApp::checkBoxStateChanged_expenditure(int status) {
 
         resetOtherMainCheckBoxes(ui->checkBoxGraphSel_expenditure->text());
 
+        Graph = new GraphManager(ChartLayout, "expenditures");
+
         // enable sub-checkboxes
         ui->checkBoxGraphSel_exp_all->setEnabled(true);
         ui->checkBoxGraphSel_exp_all->setChecked(true);
@@ -277,19 +279,20 @@ void FinApp::checkBoxStateChanged_expenditure(int status) {
 }
 
 void FinApp::checkBoxStateChanged_exp_all(int status) {
-    if (status == 2) {
-        // set graph
+    if (status == 2) { // if checkbox is active
+        // create filtered database
         DataBase selected_database = DataBase( DatabaseManager::selectFilter(STRING_SELECT_FIELD_EXPENDITURE, DbFull->getAllTransactions()));
         selected_database.negateTotalDataBase();
-        Graph = new GraphManager(ChartLayout, selected_database.getAllTransactions(), STRING_SELECT_FIELD_EXPENDITURE);
-        series_expenditures_all = Graph->getFirstSeries();
+
+        // add series to the graph
+        series_expenditures_all = Graph->addSeries(selected_database.getAllTransactions());
 
         // set coloring button
         ui->buttonColor_exp_all->setEnabled(true);
         setButtonColor(ui->buttonColor_exp_all, series_expenditures_all->pen().color());
     }
 
-    else {
+    else { // if checkbox is inactive
         // empty graph
         Graph->deleteSeries(series_expenditures_all);
 

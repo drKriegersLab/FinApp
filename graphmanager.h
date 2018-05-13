@@ -22,6 +22,9 @@ public:
     ///init function for creating a totally new chart from the given records
     GraphManager(QGridLayout* Layout, vector<TransactionRecord> records, string title);
 
+    /// init without series
+    GraphManager(QGridLayout *Layout, string title);
+
     /// function for insert new data series
     QtCharts::QLineSeries* addSeries(vector<TransactionRecord> records);
 

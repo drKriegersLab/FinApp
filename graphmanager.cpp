@@ -27,7 +27,7 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
     axisY = new QtCharts::QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTitleText("Ft");
-
+    axisY->setTickCount(20);
     Chart->addAxis(axisY, Qt::AlignLeft);
 
     // set first and last date time point to determine the necessary range of X axis
@@ -36,6 +36,42 @@ GraphManager::GraphManager(QGridLayout *Layout, vector<TransactionRecord> record
     // add the first data
     num_of_series = 0;
     first_series = addSeries(records);
+
+    // define the base layout
+    ParentLayout = Layout;
+
+    // setup
+    setTitle(title);
+
+    // creacte chart view object
+    ChartView = new QtCharts::QChartView(Chart);
+
+    setAbscissa();
+
+    // give chart to the layout manager
+    addChartToLayout();
+
+}
+
+GraphManager::GraphManager(QGridLayout *Layout, string title) {
+    Chart = new QtCharts::QChart();
+    Chart->legend()->hide();
+
+    // set axis X
+    axisX = new QtCharts::QDateTimeAxis;
+    axisX->setTickCount(10);
+    axisX->setFormat("dd. MM.");
+    axisX->setTitleText("Date");
+    Chart->addAxis(axisX, Qt::AlignBottom);
+
+    // set axis Y
+    axisY = new QtCharts::QValueAxis;
+    axisY->setLabelFormat("%i");
+    axisY->setTitleText("Ft");
+    axisY->setTickCount(20);
+    Chart->addAxis(axisY, Qt::AlignLeft);
+
+    num_of_series = 0;
 
     // define the base layout
     ParentLayout = Layout;
@@ -100,6 +136,7 @@ QtCharts::QLineSeries* GraphManager::addSeries(vector<TransactionRecord> records
     series_name.append("_");
     series_name.append(QString::number(num_of_series));
     Series->setName(series_name);
+
     // send a message about the new series
     string message = "added series. Name: ";
     message.append(series_name.toStdString());

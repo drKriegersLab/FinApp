@@ -16,7 +16,7 @@ struct TransactionRecord {
 */
 #define STRING_SELECT_FIELD_INCOME "income"
 #define STRING_SELECT_FIELD_EXPENDITURE "expenditure"
-#define STRING_SELECT_FIELD_PAYPASS "paypas"
+#define STRING_SELECT_FIELD_PAYPASS "paypass"
 #define STRING_SELECT_FIELD_CASHOUT "cashout"
 
 class DataBase

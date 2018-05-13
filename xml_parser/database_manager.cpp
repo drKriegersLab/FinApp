@@ -1,5 +1,6 @@
 #include "xml_parser_main.h"
 #include "database_manager.h"
+#include "database.h"
 
 /***** PUBLIC FUNCTIONS *****/
 
@@ -52,16 +53,16 @@ vector<TransactionRecord> DatabaseManager::selectString(vector<TransactionRecord
 vector<TransactionRecord> DatabaseManager::selectFilter(QString filter, vector<TransactionRecord> records_input){
     vector<TransactionRecord> records_output;
 
-    if (filter == "income") {
+    if (filter == STRING_SELECT_FIELD_INCOME) {
         records_output = DatabaseManager::selectIncomes(records_input);
     }
-    else if ( filter == "expenditure" ) {
+    else if ( filter == STRING_SELECT_FIELD_EXPENDITURE ) {
         records_output = DatabaseManager::selectExpenditures(records_input);
     }
-    else if ( filter ==  "paypass" ) {
+    else if ( filter ==  STRING_SELECT_FIELD_PAYPASS ) {
         records_output = DatabaseManager::selectString(records_input, "PPASS");
     }
-    else if ( filter == "cashout" ) {
+    else if ( filter == STRING_SELECT_FIELD_CASHOUT ) {
         records_output = DatabaseManager::selectString(records_input, "ATM");
     }
     else {
