@@ -112,7 +112,7 @@ QtCharts::QLineSeries* GraphManager::addSeries(vector<TransactionRecord> records
         date_time.setDate(QDate(rec.date->year(), rec.date->month(), rec.date->day()));
         Series->append(date_time.toMSecsSinceEpoch(), rec.balance);
 
-        // set autorange in y axis
+        // set autorange in y axis. If I use it, the update method is not necessary --> we not iterate all series
         if ((int)rec.balance < minval_axis_y) {
             minval_axis_y = (int)rec.balance;
         }
@@ -249,11 +249,9 @@ void GraphManager::updateOrdinateRange() {
             }
         }
     }
-    minval_axis_y = -100000;
-    maxval_axis_y = 100000;
 
     axisY->setRange(minval_axis_y, maxval_axis_y);
-//    axisY->applyNiceNumbers();
+    axisY->applyNiceNumbers();
     //series->attachAxis(axisY);
 }
 
