@@ -1,1 +1,1 @@
-FinApp
+FinApp_GUI
