@@ -12,3 +12,5 @@ old/
 \.idea/
 
 __pycache__/
+
+\.configVenv\.sh\.swp
